@@ -1,0 +1,8 @@
+let egg = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "abdseyada2",
+    database: "egg"
+});
+
+module.exports = egg;
