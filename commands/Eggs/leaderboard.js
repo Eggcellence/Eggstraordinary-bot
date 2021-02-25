@@ -4,7 +4,7 @@ const mysql = require("mysql");
 let egg = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "abdseyada2",
+    password: "x",
     database: "egg"
 });
 
