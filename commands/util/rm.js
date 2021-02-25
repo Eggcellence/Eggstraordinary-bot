@@ -10,11 +10,11 @@ module.exports = {
         const userid = args[0]
 
         egg.query(`SELECT * FROM UsersEggs WHERE userid = ?`, `${userid}`, (err, result) => {
-            if (err) return message.channel.send(`Error occured, code: ${err.code} - Please message the developer`)
+            if (err) return message.channel.send(`⚠ - Code: ${err.code} - Please message the developer with the code`)
             if(result.length !== 0) {
                 egg.query(`DELETE FROM UsersEggs WHERE userid = ?`, `${userid}`, (err, result) => {
                     if (err) {
-                        return message.channel.send(`Error occured, code: ${err.code} - Please message the developer`)
+                        return message.channel.send(`⚠ - Code: ${err.code} - Please message the developer with the code`)
                     } else {
                         message.channel.send(`Removed`)
                     }

@@ -1,14 +1,12 @@
 # Requirements
 
-## Node.JS
+## MySQL
+- Edit credentials at db.js
+- Database: egg - Table: CREATE TABLE UsersEggs (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, userid VARCHAR(255), eggs int, username VARCHAR(255));
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
-
-| Version     | Supported          |
-| ----------- | ------------------ |
-| Node v12+   | :white_check_mark: |
+## Token
+- Edit in .env TOKEN=x
 
 ## Reporting a Vulnerability
 
-Add me at A7U#1001 or create a new issue.
+A7U#1001 or create a new issue.
