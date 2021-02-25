@@ -31,15 +31,16 @@ module.exports = async (client, message) => {
 			if (!devs.includes(message.author.id)) {
 				return message.channel.send(':x: - Unauthorized');
 			}
-
-			if (!command) {
-				command = client.commands.get(client.aliases.get(cmd));
-				command.run(client, message, args, egg, Discord)
-			} else if (command) {
-				command.run(client, message, args, egg, Discord);
-			}
 		}
-	} catch (error) {
+
+		if (!command) {
+			command = client.commands.get(client.aliases.get(cmd));
+			command.run(client, message, args, egg, Discord)
+		} else if (command) {
+			command.run(client, message, args, egg, Discord);
+		}
+
+	} finally {
 
 	}
 };

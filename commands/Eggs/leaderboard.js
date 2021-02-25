@@ -1,11 +1,10 @@
-
 //  UsersEggs (userid int, eggs int);
 
 module.exports = {
     name: 'leaderboard',
     aliases: ['lb', 'leader'],
     category: 'egg',
-    owner: true,
+    owner: false,
     run: async (client, message, args, egg, Discord) => {
 
         egg.query(`SELECT * FROM UsersEggs ORDER BY eggs DESC LIMIT 10`, (err, result) => {

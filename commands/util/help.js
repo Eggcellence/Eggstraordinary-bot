@@ -1,7 +1,7 @@
 const fs = require("fs")
 module.exports = {
     name: "help",
-    owner: true,
+    owner: false,
     category: "util",
     run: async (client, message, args, egg, Discord) => {
 
@@ -14,8 +14,8 @@ module.exports = {
                 const embed = new Discord.MessageEmbed()
                     .setTitle(`Help Desk`)
                     .setDescription(cats)
+                    .setThumbnail(client.user.defaultAvatarURL)
                     .setColor("YELLOW")
-
                 message.channel.send(embed)
             })
 
@@ -34,6 +34,7 @@ module.exports = {
                 const embed = new Discord.MessageEmbed()
                     .setTitle(`${args[0]} | Help Desk`)
                     .setDescription(files)
+                    .setThumbnail(client.user.defaultAvatarURL)
                     .setColor("YELLOW")
 
                 message.channel.send(embed)

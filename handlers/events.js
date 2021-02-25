@@ -1,4 +1,3 @@
-
 const reqEv = (ev) => require(`../events/${ev}.js`);
 
 module.exports = (client) => {

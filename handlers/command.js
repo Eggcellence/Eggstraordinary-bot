@@ -10,7 +10,7 @@ module.exports = (client) => {
 			if (get.name) {
 				client.commands.set(get.name, get);
 			} else {
-                console.log(file, `hey, this file doesn't seem to be healthy`)
+				console.log(file, `hey, this file doesn't seem to be healthy`)
 				continue;
 			}
 

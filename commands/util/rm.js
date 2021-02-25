@@ -1,4 +1,3 @@
-
 //  UsersEggs (userid int, eggs int);
 
 module.exports = {
@@ -11,7 +10,7 @@ module.exports = {
 
         egg.query(`SELECT * FROM UsersEggs WHERE userid = ?`, `${userid}`, (err, result) => {
             if (err) return message.channel.send(`⚠ - Code: ${err.code} - Please message the developer with the code`)
-            if(result.length !== 0) {
+            if (result.length !== 0) {
                 egg.query(`DELETE FROM UsersEggs WHERE userid = ?`, `${userid}`, (err, result) => {
                     if (err) {
                         return message.channel.send(`⚠ - Code: ${err.code} - Please message the developer with the code`)

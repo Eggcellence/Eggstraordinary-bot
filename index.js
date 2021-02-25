@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { config } = require('dotenv');
+const {
+	config
+} = require('dotenv');
 const fs = require('fs');
 
 client.commands = new Map();
@@ -12,7 +14,7 @@ config({
 	path: __dirname + '/.env'
 });
 
-[ 'command', 'events' ].forEach((handler) => {
+['command', 'events'].forEach((handler) => {
 	require(`./handlers/${handler}`)(client);
 });
 

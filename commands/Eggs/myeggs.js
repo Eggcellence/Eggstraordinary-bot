@@ -1,16 +1,16 @@
 //  UsersEggs (userid int, eggs int);
 
 module.exports = {
-	name: 'myeggs',
+    name: 'myeggs',
     category: 'egg',
-    owner: true,
-	run: async (client, message, args, egg) => {
+    owner: false,
+    run: async (client, message, args, egg) => {
 
         const userid = message.author.id;
 
         egg.query(`SELECT * FROM UsersEggs WHERE userid = ${userid}`, (err, result) => {
-            if(err) return message.channel.send(`⚠ - Code: ${err.code} - Please message the developer with the code`)
-            if(result.length === 0) {
+            if (err) return message.channel.send(`⚠ - Code: ${err.code} - Please message the developer with the code`)
+            if (result.length === 0) {
                 message.reply('you have 0 eggs, use e!egg to get some!')
             } else {
                 message.reply(`you have **${result[0].eggs}** 🥚! Eggsellent :wink:`)
@@ -18,5 +18,5 @@ module.exports = {
         });
 
 
-	}
+    }
 };

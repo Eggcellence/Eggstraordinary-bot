@@ -13,6 +13,7 @@
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "snekfetch": "^4.0.4"
   }
 }
