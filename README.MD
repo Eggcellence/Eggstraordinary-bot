@@ -1,4 +1,4 @@
 # Egg bot, very eggsellent 🥚
-- 🥚 Still in development, not recommended for production!
+- Still in development, not recommended for production!
 
-- 🥚 All commands are owner only right now, add your ID here: ./events/message.js line: 30
+- All commands are owner only right now, add your ID here: ./events/message.js line: 30
