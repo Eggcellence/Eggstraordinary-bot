@@ -15,6 +15,22 @@ module.exports = {
         const userid = message.author.id
         const username = message.author.username
 
+        if(args[0] === 'add') {
+            const addU = args[1]
+            const amount = args[2]
+
+            egg.query(`SELECT * FROM UsersEggs WHERE userid = ?`, `${addU}`, (err, result) => {
+                if (err) message.channel.send(`Error occured, code: ${err.code} - Please contact the developer`)
+                if(result.length !== 0) {
+                    egg.query(`UPDATE UsersEggs SET eggs = eggs + ? WHERE userid = ${addU}`, amount, (err, result) => {
+                        if(err) console.log(err)
+                        message.channel.send(`Successfully added **${amount}** eggs to ID **${addU}**`)
+                    })
+                } else {
+                    message.channel.send(`User with the ID **${addU}** not found`)
+                }
+            })
+        } else 
 
         if (EggsClaimed.has(userid)) {
             message.channel.send("You already claimed your chance for today, come back tomorrow!")
@@ -22,8 +38,8 @@ module.exports = {
             egg.query(`SELECT * FROM UsersEggs WHERE userid = ${userid}`, (err, result) => {
                 if (err) message.channel.send(`Error occured, code: ${err.code} - Please contact the developer`)
                 if (result.length === 0) {
-                    egg.query(`INSERT INTO UsersEggs (userid, eggs, username) VALUES (${userid}, ${eggs[randomEggs]}, ${username})`, (err, result) => {
-                        if (err) message.channel.send(`Error occured, code: ${err.code} - Please contact the developer`)
+                    egg.query(`INSERT INTO UsersEggs (userid, eggs, username) VALUES (${userid}, ${eggs[randomEggs]}, '${username}')`, (err, result) => {
+                        if (err) throw err
                         if (eggs[randomEggs] === '0') {
                             message.channel.send('Oh dear, no eggs left for you! Good luck tomorrow.')
                         } else {
