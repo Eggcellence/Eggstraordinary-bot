@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 const mysql = require("mysql");
 const prefix = 'e!';
-
+const dbConfig = require("../db");
+const db = dbConfig.database
 
 module.exports = async (client, message) => {
 
@@ -14,6 +15,12 @@ module.exports = async (client, message) => {
 
 	const args = message.content.slice(prefix.length).split(/ +/g);
 	const cmd = args.shift().toLowerCase();
+	let egg = mysql.createPool({
+		host: db.host,
+		user: db.user,
+		password: db.password,
+		database: db.database
+	});
 
 	if (cmd.length === 0) return;
 
@@ -27,11 +34,11 @@ module.exports = async (client, message) => {
 
 			if (!command) {
 				command = client.commands.get(client.aliases.get(cmd));
-				command.run(client, message, args, Discord)
+				command.run(client, message, args, egg, Discord)
 			} else if (command) {
-				command.run(client, message, args, Discord);
- 			}
-		} 
+				command.run(client, message, args, egg, Discord);
+			}
+		}
 	} catch (error) {
 
 	}

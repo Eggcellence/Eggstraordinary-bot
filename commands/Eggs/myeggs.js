@@ -1,19 +1,10 @@
-const mysql = require("mysql");
-
-let egg = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "abdseyada2",
-    database: "egg"
-});
-
 //  UsersEggs (userid int, eggs int);
 
 module.exports = {
 	name: 'myeggs',
     category: 'egg',
     owner: true,
-	run: async (client, message, args) => {
+	run: async (client, message, args, egg) => {
 
         const userid = message.author.id;
 

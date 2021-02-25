@@ -1,12 +1,3 @@
-// const Discord = require("discord.js");
-const mysql = require("mysql");
-
-let egg = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "abdseyada2",
-    database: "egg"
-});
 
 //  UsersEggs (userid int, eggs int);
 
@@ -15,7 +6,7 @@ module.exports = {
     aliases: ['lb', 'leader'],
     category: 'egg',
     owner: true,
-    run: async (client, message, args, Discord) => {
+    run: async (client, message, args, egg, Discord) => {
 
         egg.query(`SELECT * FROM UsersEggs ORDER BY eggs DESC LIMIT 10`, (err, result) => {
             if (err) return message.channel.send(`Error occured, code: ${err.code} - Please message the developer`)
