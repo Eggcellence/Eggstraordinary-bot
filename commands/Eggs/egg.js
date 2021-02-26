@@ -62,7 +62,7 @@ module.exports = {
                 EggsClaimed.add(userid)
                 setTimeout(() => {
                     EggsClaimed.delete(userid)
-                }, 10000)
+                }, 86400000)
             }
         }
 
