@@ -6,8 +6,7 @@ module.exports = (message, egg) => {
 
 
     // XP
-    const xp = ['15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25'];
-    const randomXP = Math.floor(Math.random() * xp.length);
+    const xp = Math.floor(Math.random() * 10) + 15;
 
     // User/Guild
     const userid = message.author.id;
@@ -16,8 +15,8 @@ module.exports = (message, egg) => {
 
     // SQL queries
     const mainSQL = `SELECT * FROM leveling WHERE guild = ${guildid} AND userid = ${userid}`;
-    const setupSQL = `INSERT INTO leveling (userid, username, xp, level, guild) VALUES ('${userid}', '${username}', ${randomXP}, 0, '${guildid}')`;
-    const updateXPSQL = `UPDATE leveling SET xp = xp + ${randomXP} WHERE guild = ${guildid} AND userid = '${userid}'`;
+    const setupSQL = `INSERT INTO leveling (userid, username, xp, level, guild) VALUES ('${userid}', '${username}', ${xp}, 0, '${guildid}')`;
+    const updateXPSQL = `UPDATE leveling SET xp = xp + ${xp} WHERE guild = ${guildid} AND userid = '${userid}'`;
     const updateLvlSQL = `UPDATE leveling SET xp = 0, level = level + 1 WHERE guild = ${guildid} AND userid = '${userid}'`;
 
     egg.query(mainSQL, (err, rows) => {
