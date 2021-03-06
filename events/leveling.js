@@ -47,7 +47,7 @@ module.exports = (message, egg) => {
             }); -
             setTimeout(() => {
                 cooldown.delete(userid, guildid)
-            }, 10000);
+            }, 30000);
         }
     });
 
