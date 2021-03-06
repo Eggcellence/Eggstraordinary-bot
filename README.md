@@ -4,7 +4,7 @@ Still in development, not recommended for production!
 
 ## Hosting the bot
 
-Put your MySQL credentials into [db.js](db.js) and run the follow command **once**:
+Put your MySQL credentials into [db.js](db.js) and run the following commands **once**:
 
 - `CREATE TABLE UsersEggs (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, userid VARCHAR(255), eggs int, username VARCHAR(255), timer bigint, guild VARCHAR(255));`
 - `CREATE TABLE leveling (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, userid VARCHAR(255), username VARCHAR(255), xp int, level int, guild VARCHAR(255);`
