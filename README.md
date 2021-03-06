@@ -2,7 +2,7 @@
 
 Still in development, not recommended for production!
 
-## Hosting the bot locally
+# Hosting the bot locally
 
 Put your MySQL credentials into [db.js](db.js) and run the following commands **once**:
 
@@ -13,7 +13,7 @@ Add your bot token into [.env](.env) and then run your bot with `node .`.
 (it's recommended to use [nodemon](https://nodemon.io/) for development)
 ---
 
-## Host the bot on a server
+# Host the bot on a server
 
 Clone the repository and cd into the dir
 ---
