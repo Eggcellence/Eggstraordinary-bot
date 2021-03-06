@@ -9,8 +9,7 @@ module.exports = {
     run: async (client, message, args, egg) => {
         
         // Eggs
-        const eggs = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'];
-        const randomEggs = Math.floor(Math.random() * eggs.length);
+        const newegg = Math.floor(Math.random() * 15);
 
         // User/Guild
         const userid = message.author.id;
@@ -23,8 +22,8 @@ module.exports = {
         // SQL queries
         const mainSQL = `SELECT * FROM UsersEggs WHERE guild = ${guildid} AND userid = ${userid}`;
         const timerSQL = `UPDATE UsersEggs SET timer = ('${date}') WHERE guild = ${guildid} AND userid = ${userid}`;
-        const eggsSQL = `UPDATE UsersEggs SET eggs = eggs + ${eggs[randomEggs]} WHERE guild = ${guildid} AND userid = '${userid}'`;
-        const setupSQL = `INSERT INTO UsersEggs (userid, eggs, username, guild) VALUES (${userid}, ${eggs[randomEggs]}, '${username}', '${guildid}')`;
+        const eggsSQL = `UPDATE UsersEggs SET eggs = eggs + ${newegg} WHERE guild = ${guildid} AND userid = '${userid}'`;
+        const setupSQL = `INSERT INTO UsersEggs (userid, eggs, username, guild) VALUES (${userid}, ${newegg}, '${username}', '${guildid}')`;
 
         egg.query(mainSQL, (err, result) => {
             let rest = Number(result[0].timer - new Date().getTime());
@@ -33,7 +32,7 @@ module.exports = {
                 egg.query(setupSQL, (err, result) => {
                     if (err) return errorMessage(err);
 
-                    eggs[randomEggs] == 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You got ${eggs[randomEggs]} 🥚`);
+                    newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You got ${newegg} 🥚`);
                     egg.query(timerSQL);
                 });
             } else {
@@ -41,7 +40,7 @@ module.exports = {
                     egg.query(eggsSQL, (err, result) => {
                         if (err) return errorMessage(err);
 
-                        eggs[randomEggs] == 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You got \`${eggs[randomEggs]}\` 🥚`);
+                        newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You got \`${newegg}\` 🥚`);
                         egg.query(timerSQL);
                     });
                 } else {
