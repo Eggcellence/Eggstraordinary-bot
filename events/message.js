@@ -2,45 +2,71 @@ const Discord = require('discord.js');
 const mysql = require("mysql");
 const prefix = 'e!';
 const dbConfig = require("../db");
-const db = dbConfig.database
+const db = dbConfig.database;
+
+// Database connection
+let egg = mysql.createPool({
+	host: db.host,
+	user: db.user,
+	password: db.password,
+	database: db.database
+});
 
 module.exports = async (client, message) => {
 
+	// If statements
 	if (message.author.bot) return;
 	if (!message.guild) return;
 
-	if (!message.content.startsWith(prefix)) return;
+	if (!message.content.startsWith(prefix)) {
+		// Leveling
+		require('./leveling')(message, egg)
+	} else {
 
-	if (!message.member) message.member = await message.guild.fetchMember(message);
+		if (!message.member) message.member = await message.guild.fetchMember(message);
 
-	const args = message.content.slice(prefix.length).split(/ +/g);
-	const cmd = args.shift().toLowerCase();
-	let egg = mysql.createPool({
-		host: db.host,
-		user: db.user,
-		password: db.password,
-		database: db.database
-	});
 
-	if (cmd.length === 0) return;
+		const args = message.content.slice(prefix.length).split(/ +/g);
+		const cmd = args.shift().toLowerCase();
 
-	try {
-		let command = client.commands.get(cmd);
-		if (command.owner) {
-			const devs = ['554762539586682880', '196099091871170560', '716738742336880681']
-			if (!devs.includes(message.author.id)) {
-				return message.channel.send(':x: - Unauthorized');
+
+		if (cmd.length === 0) return;
+
+		try {
+			let command = client.commands.get(cmd);
+
+			if (!command) {
+
+				command = client.commands.get(client.aliases.get(cmd));
+				if (!command) {
+					message.reply(':x: Command does not exist')
+				} else {
+					if (command.owner) {
+						const devs = ['554762539586682880', '196099091871170560', '716738742336880681']
+						if (!devs.includes(message.author.id)) {
+							return message.channel.send(':x: - Unauthorized');
+						}
+					}
+					command.run(client, message, args, egg, Discord);
+				}
+
+			} else
+
+
+			if (command) {
+				if (command.owner) {
+					const devs = ['554762539586682880', '196099091871170560', '716738742336880681']
+					if (!devs.includes(message.author.id)) {
+						return message.channel.send(':x: - Unauthorized');
+					}
+				}
+				command.run(client, message, args, egg, Discord);
 			}
+
+		} catch (err) {
+			console.log(err)
 		}
-
-		if (!command) {
-			command = client.commands.get(client.aliases.get(cmd));
-			command.run(client, message, args, egg, Discord)
-		} else if (command) {
-			command.run(client, message, args, egg, Discord);
-		}
-
-	} finally {
-
 	}
+
+
 };

@@ -2,7 +2,7 @@ module.exports = {
     database: {
         host: "localhost",
         user: "root",
-        password: "x",
+        password: "abdseyada2",
         database: "egg"
     }
 }
