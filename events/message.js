@@ -42,7 +42,7 @@ module.exports = async (client, message) => {
 					message.reply(':x: Command does not exist')
 				} else {
 					if (command.owner) {
-						const devs = ['554762539586682880', '196099091871170560', '716738742336880681']
+						const devs = ['554762539586682880', '196099091871170560', '633993042755452932']
 						if (!devs.includes(message.author.id)) {
 							return message.channel.send(':x: - Unauthorized');
 						}
@@ -55,7 +55,7 @@ module.exports = async (client, message) => {
 
 			if (command) {
 				if (command.owner) {
-					const devs = ['554762539586682880', '196099091871170560', '716738742336880681']
+					const devs = ['554762539586682880', '196099091871170560', '633993042755452932']
 					if (!devs.includes(message.author.id)) {
 						return message.channel.send(':x: - Unauthorized');
 					}
