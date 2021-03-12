@@ -7,23 +7,18 @@ Still in development, not recommended for production!
 Put your MySQL credentials into [db.js](db.js) and run the following commands **once**:
 
 - `CREATE TABLE UsersEggs (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, userid VARCHAR(255), eggs int, username VARCHAR(255), timer bigint, guild VARCHAR(255));`
-- `CREATE TABLE leveling (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, userid VARCHAR(255), username VARCHAR(255), xp int, level int, guild VARCHAR(255);`
+- `CREATE TABLE leveling (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, userid VARCHAR(255), username VARCHAR(255), xp int, level int, guild VARCHAR(255), timer bigint);`
 ---
-Add your bot token into [.env](.env) and then run your bot with `node .`.
+- Add your bot token into [.env](.env) and then run your bot with `node .`
 (it's recommended to use [nodemon](https://nodemon.io/) for development)
 ---
 
 # Host the bot on a server
 
-Clone the repository and cd into the dir
----
-Run `npm i`; you need Node.JS v12+! (`node -v` to check version)
----
-Follow the same database steps as locally.
----
-Install pm2 if you haven't already; `npm i -g pm2`
----
-Run `pm2 start index.js`
----
+- Clone the repository and cd into the dir
+- Run `npm i`; you need Node.JS v12+! (`node -v` to check version)
+- Follow the same database steps as locally.
+- Install pm2 if you haven't already; `npm i -g pm2`
+- Run `pm2 start index.js`
 
 MySQL version used in development: 8.0.23 (v5+ should work fine)
