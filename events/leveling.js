@@ -23,31 +23,30 @@ module.exports = (message, egg) => {
     const updateLvlSQL = `UPDATE leveling SET xp = 0, level = level + 1 WHERE guild = ${guildid} AND userid = '${userid}'`;
     const timerSQL = `UPDATE leveling SET timer = ${timer} WHERE guild = ${guildid} AND userid = '${userid}'`;
 
-
     egg.query(mainSQL, (err, rows) => {
-        if (err) return errorMessage(err)
+        if (err) return errorMessage(err);
         if (rows.length < 1) {
             egg.query(setupSQL, (err, rows) => {
-                if (err) return errorMessage(err)
+                if (err) return errorMessage(err);
                 egg.query(timerSQL, (err, rows) => {
-                    if (err) return errorMessage(err)
+                    if (err) return errorMessage(err);
                 });
             });
         } else {
             egg.query(mainSQL, (err, rows) => {
-                if (err) return errorMessage(err)
+                if (err) return errorMessage(err);
                 if (rows[0].timer !== null) {
                     return;
                 } else {
                     egg.query(updateXPSQL, (err, rows) => {
-                        if (err) return errorMessage(err)
+                        if (err) return errorMessage(err);
                         egg.query(timerSQL);
                         egg.query(mainSQL, (err, rows) => {
                             const formula = 5 * (rows[0].level ** 2) + 50 * rows[0].level + 100;
 
                             if (rows[0].xp > formula) {
                                 egg.query(updateLvlSQL, (err, rows) => {
-                                    if (err) return errorMessage(err)
+                                    if (err) return errorMessage(err);
                                     egg.query(mainSQL, (err, rows) => {
                                         message.reply(`you've reached level \`${rows[0].level}\``);
                                     });

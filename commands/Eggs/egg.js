@@ -26,7 +26,6 @@ module.exports = {
         const setupSQL = `INSERT INTO UsersEggs (userid, eggs, username, guild) VALUES (${userid}, ${newegg}, '${username}', '${guildid}')`;
 
         egg.query(mainSQL, (err, result) => {
-            let rest = Number(result[0].timer - new Date().getTime());
             if (err) return errorMessage(err);
             if (result.length < 1) {
                 egg.query(setupSQL, (err, result) => {
@@ -44,6 +43,7 @@ module.exports = {
                         egg.query(timerSQL);
                     });
                 } else {
+                    let rest = Number(result[0].timer - new Date().getTime());
                     message.reply(`You already claimed your 🥚 for today, come back after \`${prettyMs(rest, {secondsDecimalDigits: 0})}\`!`); 
                 }
             }
@@ -54,7 +54,7 @@ module.exports = {
          */
 
         function errorMessage(err) {
-            message.channel.send(`⚠ - Code: ${err.code} - Please message the developer with the code`);
+            message.reply(`⚠ - Code: ${err.code} - Please message the developer with the code`);
         }
     }
 };
