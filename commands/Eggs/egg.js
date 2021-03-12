@@ -1,5 +1,5 @@
 const prettyMs = require('pretty-ms');
-//  UsersEggs (userid int, eggs int, username VARCHAR(255), timer bigint, guild varchar(255));
+//  UsersEggs (userid int, eggs int, timer bigint, guild varchar(255));
 
 module.exports = {
     name: 'egg',
@@ -7,13 +7,12 @@ module.exports = {
     aliases: ['eg'],
     owner: false,
     run: async (client, message, args, egg) => {
-        
+
         // Eggs
         const newegg = Math.floor(Math.random() * 15);
 
         // User/Guild
         const userid = message.author.id;
-        const username = message.author.username;
         const guildid = message.guild.id;
 
         // Current date
@@ -23,7 +22,7 @@ module.exports = {
         const mainSQL = `SELECT * FROM UsersEggs WHERE guild = ${guildid} AND userid = ${userid}`;
         const timerSQL = `UPDATE UsersEggs SET timer = ('${date}') WHERE guild = ${guildid} AND userid = ${userid}`;
         const eggsSQL = `UPDATE UsersEggs SET eggs = eggs + ${newegg} WHERE guild = ${guildid} AND userid = '${userid}'`;
-        const setupSQL = `INSERT INTO UsersEggs (userid, eggs, username, guild) VALUES (${userid}, ${newegg}, '${username}', '${guildid}')`;
+        const setupSQL = `INSERT INTO UsersEggs (userid, eggs, guild) VALUES (${userid}, ${newegg}, '${guildid}')`;
 
         egg.query(mainSQL, (err, result) => {
             if (err) return errorMessage(err);
@@ -44,7 +43,7 @@ module.exports = {
                     });
                 } else {
                     let rest = Number(result[0].timer - new Date().getTime());
-                    message.reply(`You already claimed your 🥚 for today, come back after \`${prettyMs(rest, {secondsDecimalDigits: 0})}\`!`); 
+                    message.reply(`You already claimed your 🥚 for today, come back after \`${prettyMs(rest, {secondsDecimalDigits: 0})}\`!`);
                 }
             }
         });

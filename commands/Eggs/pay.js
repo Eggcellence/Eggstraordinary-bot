@@ -23,7 +23,7 @@ module.exports = {
         // SQL Queries
         const payerCheck = `SELECT * FROM UsersEggs WHERE guild = ${guildid} AND userid = ${payer}`;
         const payeeCheck = `SELECT * FROM UsersEggs WHERE guild = ${guildid} AND userid = ${payee.id}`;
-        const payeeInsert = `INSERT INTO UsersEggs (userid, eggs, username, guild) VALUES (${payee.id}, ${amount}, '${payee.username}', '${guildid}')`
+        const payeeInsert = `INSERT INTO UsersEggs (userid, eggs, guild) VALUES (${payee.id}, ${amount}, '${guildid}')`
         const pay = `UPDATE UsersEggs SET eggs = eggs - ${amount} WHERE userid = ${payer} AND guild = ${guildid}`;
         const receive = `UPDATE UsersEggs SET eggs = eggs + ${amount} WHERE userid = ${payee.id} AND guild = ${guildid}`;
 

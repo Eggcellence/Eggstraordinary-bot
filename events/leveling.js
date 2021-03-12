@@ -2,7 +2,7 @@ const cooldown = new Set();
 module.exports = (message, egg) => {
 
     // Table: leveling
-    // content: userid VARCHAR(255), username VARCHAR(255), xp int, level int, guild VARCHAR(255), timer bigint
+    // content: userid VARCHAR(255), xp int, level int, guild VARCHAR(255), timer bigint
 
 
     // XP
@@ -13,12 +13,11 @@ module.exports = (message, egg) => {
 
     // User/Guild
     const userid = message.author.id;
-    const username = message.author.username;
     const guildid = message.guild.id;
 
     // SQL queries
     const mainSQL = `SELECT * FROM leveling WHERE guild = ${guildid} AND userid = ${userid}`;
-    const setupSQL = `INSERT INTO leveling (userid, username, xp, level, guild) VALUES ('${userid}', '${username}', ${xp}, 0, '${guildid}')`;
+    const setupSQL = `INSERT INTO leveling (userid, xp, level, guild) VALUES ('${userid}', ${xp}, 0, '${guildid}')`;
     const updateXPSQL = `UPDATE leveling SET xp = xp + ${xp} WHERE guild = ${guildid} AND userid = '${userid}'`;
     const updateLvlSQL = `UPDATE leveling SET xp = 0, level = level + 1 WHERE guild = ${guildid} AND userid = '${userid}'`;
     const timerSQL = `UPDATE leveling SET timer = ${timer} WHERE guild = ${guildid} AND userid = '${userid}'`;
