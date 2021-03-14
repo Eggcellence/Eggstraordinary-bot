@@ -22,7 +22,7 @@ const client = new Discord.Client({
 		]
 	}
 });
-
+// Webstorm test
 const {
 	config
 } = require('dotenv');

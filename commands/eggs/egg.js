@@ -43,7 +43,7 @@ module.exports = {
                     });
                 } else {
                     egg.query(mainSQL, (err, rows) => {
-                        if(err) errorMessage(err)
+                        if (err) errorMessage(err)
                         let rest = Number(result[0].timer - new Date().getTime());
                         message.reply(`you have \`${rows[0].eggs}\` 🥚 - you can claim more after \`${prettyMs(rest, {secondsDecimalDigits: 0})}\``)
                     });
