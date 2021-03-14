@@ -28,7 +28,7 @@ module.exports = {
 
                 let files = ''
                 data.forEach(e => {
-                    files += `\`**${e.slice(0, -3)}**\`\n`
+                    files += `\`${e.slice(0, -3)}\`\n`
                 });
                 const embed = new Discord.MessageEmbed()
                     .setTitle(`${args[0].toLowerCase()} | Help Desk`)
