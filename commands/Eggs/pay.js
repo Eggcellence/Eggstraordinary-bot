@@ -17,6 +17,10 @@ module.exports = {
             return message.reply(`please mention the person you want to pay.`)
         }
 
+        if(amount <= 0) {
+            return message.reply(`you must pay at least 1 egg.`);
+        }
+
         // Discord server
         const guildid = message.guild.id;
 
