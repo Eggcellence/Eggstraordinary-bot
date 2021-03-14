@@ -1,7 +1,7 @@
 module.exports = {
     name: 'rep',
     category: 'reputation',
-    owner: false,
+    owner: true,
     run: async (client, message, args, egg, Discord) => {
 
         // Table: rep
