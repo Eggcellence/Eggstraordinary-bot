@@ -25,10 +25,8 @@ module.exports = async (client, message) => {
 
 		if (!message.member) message.member = await message.guild.fetchMember(message);
 
-
 		const args = message.content.slice(prefix.length).split(/ +/g);
 		const cmd = args.shift().toLowerCase();
-
 
 		if (cmd.length === 0) return;
 
@@ -51,7 +49,6 @@ module.exports = async (client, message) => {
 				}
 
 			} else
-
 
 			if (command) {
 				if (command.owner) {

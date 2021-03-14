@@ -42,8 +42,11 @@ module.exports = {
                         egg.query(timerSQL);
                     });
                 } else {
-                    let rest = Number(result[0].timer - new Date().getTime());
-                    message.reply(`You already claimed your 🥚 for today, come back after \`${prettyMs(rest, {secondsDecimalDigits: 0})}\`!`);
+                    egg.query(mainSQL, (err, rows) => {
+                        if(err) errorMessage(err)
+                        let rest = Number(result[0].timer - new Date().getTime());
+                        message.reply(`you have \`${rows[0].eggs}\` 🥚 - you can claim more after \`${prettyMs(rest, {secondsDecimalDigits: 0})}\``)
+                    });
                 }
             }
         });

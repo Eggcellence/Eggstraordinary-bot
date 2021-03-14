@@ -12,9 +12,17 @@ module.exports = {
         if (!amount) {
             return message.reply(`please include a valid amount.`)
         }
+        
+        if(amount < 0) {
+            return message.reply(`please choose a valid amount`)
+        }
 
         if (!payee) {
             return message.reply(`please mention the person you want to pay.`)
+        }
+
+        if(payee === message.author) {
+            return message.reply(`why would you pay yourself?`)
         }
 
         // Discord server
@@ -23,7 +31,7 @@ module.exports = {
         // SQL Queries
         const payerCheck = `SELECT * FROM UsersEggs WHERE guild = ${guildid} AND userid = ${payer}`;
         const payeeCheck = `SELECT * FROM UsersEggs WHERE guild = ${guildid} AND userid = ${payee.id}`;
-        const payeeInsert = `INSERT INTO UsersEggs (userid, eggs, guild) VALUES (${payee.id}, ${amount}, '${guildid}')`
+        const payeeInsert = `INSERT INTO UsersEggs (userid, eggs, guild) VALUES (${payee.id}, ${amount}, '${guildid}')`;
         const pay = `UPDATE UsersEggs SET eggs = eggs - ${amount} WHERE userid = ${payer} AND guild = ${guildid}`;
         const receive = `UPDATE UsersEggs SET eggs = eggs + ${amount} WHERE userid = ${payee.id} AND guild = ${guildid}`;
 
