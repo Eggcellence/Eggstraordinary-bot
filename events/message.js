@@ -21,7 +21,7 @@ module.exports = async (client, message) => {
 	if (!message.guild) return;
 
 	// Eggcellence server
-	if (message.guild.id === '816947288643469314') return;
+	// if (message.guild.id === '816947288643469314') return;
 
 	// Prefix?
 
