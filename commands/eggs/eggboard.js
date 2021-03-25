@@ -2,7 +2,7 @@
 
 module.exports = {
     name: 'eggboard',
-    aliases: ['eb', 'eggb'],
+    aliases: ['eb', 'egglb'],
     category: 'egg',
     owner: false,
     run: async (client, message, args, egg, Discord) => {
@@ -13,7 +13,7 @@ module.exports = {
             if (err) return message.channel.send(`⚠ - Code: ${err.code} - Please message the developer with the code`);
             const embed = new Discord.MessageEmbed();
             let topTen = [];
-            
+
             result.forEach(e => {
                 topTen.push(`**<@${e.userid}>** - \`${e.eggs}\` 🥚`);
             });

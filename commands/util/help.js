@@ -5,42 +5,45 @@ module.exports = {
     category: "util",
     run: async (client, message, args, egg, Discord) => {
 
-        if (!args[0]) {
-            fs.readdir("./commands", (err, data) => {
+        let guildid = message.guild.id;
+        let help;
+        egg.query(`SELECT * FROM prefix WHERE guild = '${guildid}'`, (err, rows) => {
+            if(err) return message.reply(`⚠ - Code: ${err.code} - Please message the developer with the code`);
+            if (rows.length === 0) return help = 'e!help';
+            help = `${rows[0].prefix}help`;
+
+            if (!args[0]) {
                 let cats = ''
-                data.forEach(c => {
-                    cats += `e!help \`${c}\`\n`
+                client.categories.forEach(c => {
+                    cats += `${help} \`${c}\`\n`
                 });
                 const embed = new Discord.MessageEmbed()
                     .setTitle(`Help Desk`)
                     .setDescription(cats)
-                    .setThumbnail(client.user.defaultAvatarURL)
+                    .setThumbnail(client.user.avatarURL())
                     .setColor("YELLOW")
                 message.channel.send(embed)
-            });
+            } else {
 
-        } else {
+                const cat = args[0].toLowerCase();
 
-            const cat = args[0].toLowerCase()
-
-            fs.readdir(`./commands/${cat}`, (err, data) => {
-                if(err) return message.channel.send(`:x: - Invalid category`)
-
+                let cats = fs.readdirSync(`./commands/${cat}/`).filter((file) => file.endsWith('.js'));
                 let files = ''
-                data.forEach(e => {
+                cats.forEach(e => {
                     files += `\`${e.slice(0, -3)}\`\n`
                 });
                 const embed = new Discord.MessageEmbed()
                     .setTitle(`${args[0].toLowerCase()} | Help Desk`)
                     .setDescription(files)
-                    .setThumbnail(client.user.defaultAvatarURL)
+                    .setThumbnail(client.user.avatarURL())
                     .setColor("YELLOW")
 
                 message.channel.send(embed)
+            }
 
-            });
 
-        }
+        });
+
 
     }
 }

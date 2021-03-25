@@ -13,7 +13,7 @@ module.exports = {
             return message.reply(`please include a valid amount.`)
         }
         
-        if(amount < 0) {
+        if(amount <= 0) {
             return message.reply(`please choose a valid amount`)
         }
 

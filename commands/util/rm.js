@@ -9,6 +9,8 @@ module.exports = {
         const userid = args[0];
         const guildid = message.guild.id;
 
+        if(!userid) return message.channel.send(':x: provide a user!')
+        
         egg.query(`SELECT * FROM UsersEggs WHERE guild = ${guildid} AND userid = ?`, `${userid}`, (err, result) => {
             if (err) return message.channel.send(`⚠ - Code: ${err.code} - Please message the developer with the code`)
             if (result.length !== 0) {

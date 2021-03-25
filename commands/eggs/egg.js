@@ -27,15 +27,15 @@ module.exports = {
         egg.query(mainSQL, (err, result) => {
             if (err) return errorMessage(err);
             if (result.length < 1) {
-                egg.query(setupSQL, (err, result) => {
+                egg.query(setupSQL, (err) => {
                     if (err) return errorMessage(err);
-
+                    
                     newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You got ${newegg} 🥚`);
                     egg.query(timerSQL);
                 });
             } else {
                 if (result[0].timer == null) {
-                    egg.query(eggsSQL, (err, result) => {
+                    egg.query(eggsSQL, (err) => {
                         if (err) return errorMessage(err);
 
                         newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You got \`${newegg}\` 🥚`);
