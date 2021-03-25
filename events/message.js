@@ -27,13 +27,14 @@ module.exports = async (client, message) => {
 
 	egg.query(`SELECT * FROM prefix WHERE guild = ${guild}`, async (err, rows) => {
 		if (err) throw err;
-		if (rows.length === 0) return prefix = 'e!'
-		prefix = rows[0].prefix;
+		if (rows.length !== 0) {
+			prefix = rows[0].prefix;
+		}
+
 		if (!message.content.startsWith(prefix)) {
 			// Leveling
 			require('./leveling')(message, egg)
 		} else {
-
 			if (!message.member) message.member = await message.guild.fetchMember(message);
 
 			const args = message.content.slice(prefix.length).split(/ +/g);
@@ -43,7 +44,6 @@ module.exports = async (client, message) => {
 
 			try {
 				let command = client.commands.get(cmd);
-
 				if (!command) {
 					command = client.commands.get(client.aliases.get(cmd));
 					if (!command) {

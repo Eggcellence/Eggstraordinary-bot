@@ -4,13 +4,15 @@ module.exports = {
     owner: false,
     category: "util",
     run: async (client, message, args, egg, Discord) => {
-
         let guildid = message.guild.id;
         let help;
         egg.query(`SELECT * FROM prefix WHERE guild = '${guildid}'`, (err, rows) => {
             if(err) return message.reply(`⚠ - Code: ${err.code} - Please message the developer with the code`);
-            if (rows.length === 0) return help = 'e!help';
-            help = `${rows[0].prefix}help`;
+            if (rows.length === 0) {
+                help = 'e!help';
+            } else {
+                help = `${rows[0].prefix}help`;
+            }
 
             if (!args[0]) {
                 let cats = ''
