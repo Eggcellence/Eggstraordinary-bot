@@ -1,6 +1,6 @@
 # Egg bot, very eggsellent 🥚
 
-90% stable. 
+So what is Eggstraordinary? An incomplete yet stable egg bot. Please if you have any issues/questions regarding this don't hesitate to join our [support server](https://discord.gg/6rF4XxXdt6)
 
 # Hosting the bot locally
 
@@ -9,6 +9,7 @@ Put your MySQL credentials into [db.js](db.js) and run the following commands **
 - `CREATE TABLE UsersEggs (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, userid VARCHAR(255), eggs int, timer bigint, guild VARCHAR(255));`
 - `CREATE TABLE leveling (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, userid VARCHAR(255), xp int, level int, guild VARCHAR(255), timer bigint);`
 - `CREATE TABLE prefix (guild VARCHAR(255), prefix VARCHAR(255));`
+- `CREATE TABLE disabledcmd (guild VARCHAR(255), cmd VARCHAR(255));`
 ---
 - Add your bot token into [.env](.env) and then run your bot with `node .`
 (it's recommended to use [nodemon](https://nodemon.io/) for development)
@@ -16,7 +17,7 @@ Put your MySQL credentials into [db.js](db.js) and run the following commands **
 
 # Host the bot on a server
 
-- Clone the repository and cd into the dir
+- Clone the repository and cd into the directory
 - Run `npm i`; you need Node.JS v12+! (`node -v` to check version)
 - Follow the same database steps as locally.
 - Install pm2 if you haven't already; `npm i -g pm2`
