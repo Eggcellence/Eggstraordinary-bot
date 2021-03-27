@@ -16,8 +16,8 @@ module.exports = (client, message) => {
     const mainLvlSQL = `SELECT timer FROM leveling WHERE timer IS NOT NULL`;
 
     // Discord client
-    console.log(`${client.user.username}!`)
-    client.user.setActivity(`🥚`)
+    console.log(`${client.user.username}!`);
+    client.user.setActivity(`🥚`);
 
     setInterval(() => {
         // Current date

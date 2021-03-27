@@ -33,7 +33,7 @@ module.exports = async (client, message) => {
 
 		if (!message.content.startsWith(prefix)) {
 			// Leveling
-			require('./leveling')(message, egg)
+			require('./leveling')(message, egg);
 		} else {
 			if (!message.member) message.member = await message.guild.fetchMember(message);
 
@@ -47,23 +47,23 @@ module.exports = async (client, message) => {
 				if (!command) {
 					command = client.commands.get(client.aliases.get(cmd));
 					if (!command) {
-						message.reply(':x: Command does not exist')
+						message.reply(':x: command does not exist')
 					} else {
 						if (command.owner) {
 							if (!devs.includes(message.author.id)) {
-								return message.channel.send(':x: - Unauthorized');
+								return message.reply(':x: - Unauthorized');
 							}
 						}
-						command.run(client, message, args, egg, Discord);
+						require("./disabledCmd")(client, message, args, egg, Discord, command);
 					}
 				} else
 				if (command) {
 					if (command.owner) {
 						if (!devs.includes(message.author.id)) {
-							return message.channel.send(':x: - Unauthorized');
+							return message.reply(':x: - Unauthorized');
 						}
 					}
-					command.run(client, message, args, egg, Discord);
+					require("./disabledCmd")(client, message, args, egg, Discord, command);
 				}
 			} catch (err) {
 				console.log(err)
