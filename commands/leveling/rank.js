@@ -18,8 +18,8 @@ module.exports = {
 
         egg.query(`SELECT * FROM leveling WHERE guild = ${guildid} AND userid = '${userid}'`, (err, rows) => {
             let xp = rows[0].xp
-            let reqxp = 5 * (rows[0].level ** 2) + 50 * rows[0].level + 100
             let level = rows[0].level
+            let reqxp = 5 * (level ** 2) + 50 * level + 100
 
             const rank = new canvacord.Rank()
                 .setAvatar(pfp)
