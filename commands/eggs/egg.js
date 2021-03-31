@@ -9,7 +9,7 @@ module.exports = {
     run: async (client, message, args, egg) => {
 
         // Eggs
-        const newegg = Math.floor(Math.random() * 15);
+        let newegg = Math.floor(Math.random() * 20);
 
         // User/Guild
         const userid = message.author.id;
@@ -23,6 +23,7 @@ module.exports = {
         const timerSQL = `UPDATE UsersEggs SET timer = ('${date}') WHERE guild = ${guildid} AND userid = ${userid}`;
         const eggsSQL = `UPDATE UsersEggs SET eggs = eggs + ${newegg} WHERE guild = ${guildid} AND userid = '${userid}'`;
         const setupSQL = `INSERT INTO UsersEggs (userid, eggs, guild) VALUES (${userid}, ${newegg}, '${guildid}')`;
+        const inventorySQL = `SELECT * FROM inventory WHERE guild = ${guildid} AND userid = ${userid}`;
 
         egg.query(mainSQL, (err, result) => {
             if (err) return errorMessage(err);
@@ -35,11 +36,26 @@ module.exports = {
                 });
             } else {
                 if (result[0].timer == null) {
-                    egg.query(eggsSQL, (err) => {
-                        if (err) return errorMessage(err);
+                    egg.query(inventorySQL, (err, rows) => {
+                        if(rows.length === 0) {
+                            egg.query(eggsSQL, (err) => {
+                                if (err) return errorMessage(err);
+                                newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You got \`${newegg}\` 🥚`);
+                                egg.query(timerSQL);
+                            });
+                        } else {
+                            if(rows[0].Chicken > 0) newegg = newegg + rows[0].Chicken * 10;
+                            if(rows[0].Farm > 0) newegg = newegg + rows[0].Farm * 30;
+                            if(rows[0].Frog > 0) newegg = newegg + rows[0].Frog * 5;
+                            if(rows[0].Duck > 0) newegg = newegg + rows[0].Duck * 20;
+    
+                            egg.query(eggsSQL, (err) => {
+                                if (err) return errorMessage(err);
+                                newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You got \`${newegg}\` 🥚`);
+                                egg.query(timerSQL);
+                            });
+                        }
 
-                        newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You got \`${newegg}\` 🥚`);
-                        egg.query(timerSQL);
                     });
                 } else {
                     egg.query(mainSQL, (err, rows) => {

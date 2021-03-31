@@ -18,7 +18,7 @@ module.exports = {
         if(!prefix) {
             return egg.query(mainSQL, (err, rows) => {
                 if (err) errorMessage(err)
-                message.reply(`prefix is ${rows[0].prefix}`)
+                message.reply(`prefix for \`${message.guild.name}\` is \`${rows[0].prefix}\``)
             });
         }
 

@@ -31,6 +31,9 @@ module.exports = async (client, message) => {
 			prefix = rows[0].prefix;
 		}
 
+		let regex = new RegExp(`^<@!?${client.user.id}>( |)$`);
+		if (regex.test(message.content)) return message.reply(`my prefix for \`${message.guild.name}\` is \`${prefix}\``);
+
 		if (!message.content.startsWith(prefix)) {
 			// Leveling
 			require('./leveling')(message, egg);
@@ -47,7 +50,7 @@ module.exports = async (client, message) => {
 				if (!command) {
 					command = client.commands.get(client.aliases.get(cmd));
 					if (!command) {
-						message.reply(':x: command does not exist')
+						message.reply(':x: command does not exist');
 					} else {
 						if (command.owner) {
 							if (!devs.includes(message.author.id)) {
@@ -66,7 +69,7 @@ module.exports = async (client, message) => {
 					require("./disabledCmd")(client, message, args, egg, Discord, command);
 				}
 			} catch (err) {
-				console.log(err)
+				console.log(err);
 			}
 		}
 	});

@@ -10,6 +10,7 @@ Put your MySQL credentials into [db.js](db.js) and run the following commands **
 - `CREATE TABLE leveling (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, userid VARCHAR(255), xp int, level int, guild VARCHAR(255), timer bigint);`
 - `CREATE TABLE prefix (guild VARCHAR(255), prefix VARCHAR(255));`
 - `CREATE TABLE disabledcmd (guild VARCHAR(255), cmd VARCHAR(255));`
+- `CREATE TABLE inventory (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, userid VARCHAR(255), guild VARCHAR(255), timer bigint, Chicken int NOT NULL DEFAULT 0, Farm int NOT NULL DEFAULT 0, Frog int NOT NULL DEFAULT 0, Duck int NOT NULL DEFAULT 0);`
 ---
 - Add your bot token into [.env](.env) and then run your bot with `node .`
 (it's recommended to use [nodemon](https://nodemon.io/) for development)

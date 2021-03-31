@@ -1,6 +1,5 @@
 const mysql = require("mysql");
-const dbConfig = require("../db");
-const db = dbConfig.database;
+const db = require("../db").database;
 
 // Database connection
 let con = mysql.createPool({
@@ -17,14 +16,13 @@ module.exports = (client, message) => {
 
     // Discord client
     console.log(`${client.user.username}!`);
-    client.user.setActivity(`🥚`);
+    client.user.setActivity(`Ping me! 🥚`);
 
     setInterval(() => {
         // Current date
         let date = new Date();
 
         // Check the egg timer every second
-        
         con.query(mainEggSQL, (err, rows) => {
             if (err) return errorMessage(err)
             rows.forEach(e => {

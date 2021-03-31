@@ -8,37 +8,37 @@ module.exports = {
         const userid = message.author.id;
         const guild = message.guild.id;
 
-        // Shop
         let shop = {
             1: {
-                item: "Cat",
-                value: 10
+                item: "Chicken",
+                value: 60,
+                description: 'Receive `10+` 🥚 when claiming'
             },
             2: {
-                item: "Chicken",
-                value: 20
+                item: "Farm",
+                value: 150,
+                description: 'Receive `30+` 🥚 when claiming'
             },
             3: {
-                item: "Cow",
-                value: 40
+                item: "Duck",
+                value: 80,
+                description: 'Receive `20+` 🥚 when claiming'
             },
             4: {
-                item: "Milk",
-                value: 15
-            },
-            5: {
-                item: "Seed",
-                value: 5
+                item: "Frog",
+                value: 50,
+                description: 'Receive `5+` 🥚 when claiming'
             }
         };
 
         // SQL 
         const mainSQL = `SELECT * FROM UsersEggs WHERE userid = ${userid} AND guild = ${guild}`;
+        const inventorySQL = `SELECT * FROM inventory WHERE userid = ${userid} AND guild = ${guild}`;
 
         // Loop shop for display
         let item = ``;
         for (let key in shop) {
-            item += `[\`${key}\`] **${shop[key].item}** - \`${shop[key].value}\`\n`;
+            item += `[\`${key}\`] **${shop[key].item}** - \`${shop[key].value}\`\n${shop[key].description}\n\n`;
         }
 
         // Create embed and display
@@ -46,6 +46,7 @@ module.exports = {
             .setTitle(`Egg shop`)
             .setDescription(item)
             .setColor("YELLOW")
+            .setFooter(`Respond with **cancel** to stop the process`)
         message.channel.send("\npick an item in the list or write a number:", embed).then(firstMessageEdit => {
 
             // Message collector
@@ -54,7 +55,7 @@ module.exports = {
                 time: 15000
             });
 
-            collector.on('collect', msg => {
+            collector.on('collect', async msg => {
 
                 let args = msg.content.split(' ');
 
@@ -63,17 +64,37 @@ module.exports = {
                         egg.query(mainSQL, (err, rows) => {
                             if (err) errorMessage(err)
                             let price = shop[key].value;
+                            let item = shop[key].item;
                             if (rows[0].eggs < price) {
-                                return message.reply(`you don't have enough eggs to buy this item`)
+                                return message.reply(`you don't have enough 🥚 to buy this item`)
                             } else {
                                 egg.query(`UPDATE UsersEggs SET eggs = eggs - ${price} WHERE userid = ${userid} AND guild = ${guild}`, (err, rows) => {
                                     if (err) errorMessage(err)
                                     firstMessageEdit.delete()
                                     message.channel.send(`${message.author}, you have picked successfully the ${shop[key].item} item of value ${shop[key].value}`);
+                                    egg.query(inventorySQL, (err, rows) => {
+                                        if (err) errorMessage(err)
+                                        if(rows.length === 0) {
+                                            egg.query(`INSERT INTO inventory (userid, guild, ${item}) VALUES (${userid}, ${guild}, 1)`, (err, rows) => {
+                                                if (err) errorMessage(err)
+                                                message.channel.send(`${message.author}, ${item} has been added to your inventory!`)
+                                            });
+                                        } else {
+                                            egg.query(`UPDATE inventory SET ${item} = ${item} + 1 WHERE userid = ${userid} AND guild = ${guild}`, (err, rows) => {
+                                                if (err) errorMessage(err)
+                                                message.channel.send(`${message.author}, ${item} has been added to your inventory!`)
+                                            });
+                                        }
+                                    });
                                 });
                             }
                         });
                     }
+                }
+
+                if(msg.content === 'cancel') {
+                    await collector.stop()
+                    msg.react('✅')
                 }
             });
         });
