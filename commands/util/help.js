@@ -20,7 +20,7 @@ module.exports = {
 
             if (args[0]) {
 
-                if (args[0] === 'command') {
+                if (args[0] === 'cmd') {
                     if (!args[1]) return message.reply('⚠ please include a command')
                     const cmd = args[1].toLowerCase();
                     let command = client.commands.get(cmd)
@@ -43,7 +43,7 @@ module.exports = {
                         const embed = new Discord.MessageEmbed()
                             .setTitle(`${args[0].toLowerCase()} | Help Desk`)
                             .setDescription(files)
-                            .setFooter(`${help} <command>`)
+                            .setFooter(`${help} cmd <command>`)
                             .setThumbnail(client.user.avatarURL())
                             .setColor("YELLOW")
 
