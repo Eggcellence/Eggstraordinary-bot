@@ -1,5 +1,8 @@
 module.exports = {
     name: 'pay',
+    aliases: ['give', 'trade', 'donate'],
+    description: 'Pay/Trade/Donate eggs to other users',
+    usage: '[command | alias] <amount> @user',
     category: 'eggs',
     owner: false,
     run: async (client, message, args, egg, Discord) => {
@@ -7,7 +10,7 @@ module.exports = {
         // Payer - Receiver - amount
         const payer = message.author.id;
         const payee = message.mentions.users.first()
-        const amount = Number(args[0]);
+        const amount = Number(Math.floor(args[0]));
 
         if (!amount) {
             return message.reply(`please include a valid amount.`)

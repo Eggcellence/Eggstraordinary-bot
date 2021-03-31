@@ -3,13 +3,15 @@
 module.exports = {
     name: 'leaderboard',
     aliases: ['lb', 'top'],
+    description: 'A list of top 10 in leveling in this server',
     category: 'egg',
     owner: false,
     run: async (client, message, args, egg, Discord) => {
 
         let topTen = [];
         const guild = message.guild;
-        egg.query(`SELECT * FROM leveling WHERE guild = ${guild.id} ORDER BY eggs DESC LIMIT 10`, (err, rows) => {
+        egg.query(`SELECT * FROM leveling WHERE guild = ${guild.id} ORDER BY level DESC LIMIT 10`, (err, rows) => {
+            if(err) throw err;
             for (let i = 0; i < rows.length; i++) {
                 let my_object = {}
                 my_object.id = i + 1;
@@ -35,7 +37,7 @@ module.exports = {
                     value: e.level,
                     inline: true
                 }, {
-                    name: 'XP',
+                    name: 'EGGP',
                     value: e.xp,
                     inline: true
                 });

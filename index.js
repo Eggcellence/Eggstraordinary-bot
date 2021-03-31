@@ -31,7 +31,7 @@ const fs = require('fs');
 client.commands = new Map();
 client.aliases = new Map();
 
-client.categories = fs.readdirSync(__dirname + '/commands');
+client.categories = fs.readdirSync('./commands/');
 
 config({
 	path: __dirname + '/.env'

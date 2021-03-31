@@ -3,6 +3,7 @@
 module.exports = {
     name: 'eggboard',
     aliases: ['eb', 'elb'],
+    description: "Check the top 10 egg collectors of this server",
     category: 'egg',
     owner: false,
     run: async (client, message, args, egg, Discord) => {

@@ -1,5 +1,6 @@
 module.exports = {
     name: 'ping',
+    description: 'Check the hearbeat of the bot.',
     category: 'egg',
     owner: false,
     run: async (client, message, args) => {

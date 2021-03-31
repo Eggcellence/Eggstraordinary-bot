@@ -2,6 +2,8 @@ const canvacord = require("canvacord")
 
 module.exports = {
     name: 'rank',
+    aliases: ['myrank', 'level'],
+    description: 'Check your current rank in this server',
     category: 'leveling',
     owner: false,
     run: async (client, message, args, egg, Discord) => {

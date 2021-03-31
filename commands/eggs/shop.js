@@ -1,5 +1,8 @@
 module.exports = {
     name: 'shop',
+    aliases: ['buy'],
+    description: 'Buy yourself some items and save them to your inventory to get extra eggs on each claim!',
+    usage: '[command | alias]',
     category: 'eggs',
     owner: false,
     run: async (client, message, args, egg, Discord) => {
@@ -38,7 +41,7 @@ module.exports = {
         // Loop shop for display
         let item = ``;
         for (let key in shop) {
-            item += `[\`${key}\`] **${shop[key].item}** - \`${shop[key].value}\`\n${shop[key].description}\n\n`;
+            item += `[\`${key}\`] **${shop[key].item}** - Price: \`${shop[key].value}\`\n${shop[key].description}\n\n`;
         }
 
         // Create embed and display
@@ -46,7 +49,8 @@ module.exports = {
             .setTitle(`Egg shop`)
             .setDescription(item)
             .setColor("YELLOW")
-            .setFooter(`Respond with **cancel** to stop the process`)
+            .setFooter(`Choose by sending the name of the item or number. Respond with 'cancel' to stop the process`)
+            .setThumbnail(client.user.avatarURL())
         message.channel.send("\npick an item in the list or write a number:", embed).then(firstMessageEdit => {
 
             // Message collector

@@ -1,11 +1,16 @@
 module.exports = {
     name: 'command',
+    aliases: ['cmd', 'commands'],
+    description: 'Enable/Disable commands. Enable all disabled commands',
+    usage: '[command | alias] <enable | disable | reset>',
     category: 'util',
     owner: false,
     run: async (client, message, args, egg, Discord, command) => {
 
         // Table: disabledcmd
         // Content: guild VARCHAR(255), cmd VARCHAR(255)
+
+        if(!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send(`:x: You don't have rights to run this command`);
 
         let cmd = client.commands.get(args[1]);
         let guildid = message.guild.id;
