@@ -4,7 +4,6 @@ module.exports = (message, egg) => {
     // Table: leveling
     // content: userid VARCHAR(255), xp int, level int, guild VARCHAR(255), timer bigint
 
-
     // XP
     const xp = Math.floor(Math.random() * 10) + 15;
 
@@ -41,9 +40,9 @@ module.exports = (message, egg) => {
                         if (err) return errorMessage(err);
                         egg.query(timerSQL);
                         egg.query(mainSQL, (err, rows) => {
-                            const formula = 5 * (rows[0].level ** 2) + 50 * rows[0].level + 100;
+                            const ReqXP = 5 * (rows[0].level ** 2) + 50 * rows[0].level + 100;
 
-                            if (rows[0].xp > formula) {
+                            if (rows[0].xp > ReqXP) {
                                 egg.query(updateLvlSQL, (err, rows) => {
                                     if (err) return errorMessage(err);
                                     egg.query(mainSQL, (err, rows) => {
@@ -54,7 +53,6 @@ module.exports = (message, egg) => {
                         });
                     });
                 }
-
             });
         }
     });

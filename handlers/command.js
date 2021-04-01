@@ -15,7 +15,7 @@ module.exports = (client) => {
 			}
 
 			if (get.aliases && Array.isArray(get.aliases))
-				get.aliases.forEach((alias) => client.aliases.set(alias, get.name));
+				get.aliases.forEach((alias) => client.aliases.set(alias, get));
 		}
 	});
 };

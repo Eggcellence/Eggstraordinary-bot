@@ -75,7 +75,6 @@ module.exports = {
                                 egg.query(`UPDATE UsersEggs SET eggs = eggs - ${price} WHERE userid = ${userid} AND guild = ${guild}`, (err, rows) => {
                                     if (err) errorMessage(err)
                                     firstMessageEdit.delete()
-                                    message.channel.send(`${message.author}, you have picked successfully the ${shop[key].item} item of value ${shop[key].value}`);
                                     egg.query(inventorySQL, (err, rows) => {
                                         if (err) errorMessage(err)
                                         if(rows.length === 0) {

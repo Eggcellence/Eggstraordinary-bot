@@ -2,7 +2,7 @@ module.exports = {
     name: 'command',
     aliases: ['cmd', 'commands'],
     description: 'Enable/Disable commands. Enable all disabled commands',
-    usage: '[command | alias] <enable | disable | reset>',
+    usage: '[command | alias] <enable | disable | reset> <command>',
     category: 'util',
     owner: false,
     run: async (client, message, args, egg, Discord, command) => {
@@ -12,7 +12,7 @@ module.exports = {
 
         if(!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send(`:x: You don't have rights to run this command`);
 
-        let cmd = client.commands.get(args[1]);
+        let cmd = client.commands.get(args[1]) || client.aliases.get(args[1]);
         let guildid = message.guild.id;
 
         if(!args[0]) {
@@ -20,10 +20,14 @@ module.exports = {
         }
 
         if(args[0] === "disable") {
-
+            
             if(!args[1]) return message.reply(`⚠ provide a command to disable`);
             if(!cmd) return message.reply(`:x: command does not exist`)
             
+            if(cmd.name === 'command' || cmd.name === 'help') {
+                return message.reply(`:x: you can't disable this command.`)
+            }
+
             egg.query(`SELECT * FROM disabledcmd WHERE guild = '${guildid}' AND cmd = '${cmd.name}'`, (err, rows) => {
                 if(err) throw err;
                 if(rows.length === 0) {

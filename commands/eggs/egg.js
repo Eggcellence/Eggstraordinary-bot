@@ -3,7 +3,7 @@ const prettyMs = require('pretty-ms');
 
 module.exports = {
     name: 'egg',
-    category: 'egg',
+    category: 'eggs',
     aliases: ['eg', 'eggs'],
     description: 'Claim eggs daily and check how many eggs you have!',
     owner: false,
