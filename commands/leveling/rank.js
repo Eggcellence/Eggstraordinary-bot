@@ -5,7 +5,6 @@ module.exports = {
     aliases: ['myrank', 'level'],
     description: 'Check your current rank in this server',
     category: 'leveling',
-    owner: false,
     run: async (client, message, args, egg, Discord) => {
 
         const userid = message.author.id;

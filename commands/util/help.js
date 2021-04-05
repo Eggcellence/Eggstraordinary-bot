@@ -4,7 +4,6 @@ module.exports = {
     aliases: ['h'],
     description: "Help desk. View all categories and commands",
     usage: '[command | alias] + command + command name',
-    owner: false,
     category: "util",
     run: async (client, message, args, egg, Discord) => {
         let guildid = message.guild.id;

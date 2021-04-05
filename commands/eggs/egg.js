@@ -6,7 +6,6 @@ module.exports = {
     category: 'eggs',
     aliases: ['eg', 'eggs'],
     description: 'Claim eggs daily and check how many eggs you have!',
-    owner: false,
     run: async (client, message, args, egg) => {
 
         // Eggs

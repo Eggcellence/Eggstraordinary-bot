@@ -7,8 +7,8 @@ module.exports = (message, egg) => {
     // XP
     const xp = Math.floor(Math.random() * 10) + 15;
 
-    // Cooldown (30s)
-    const timer = new Date().getTime() + 30000;
+    // Cooldown (60s)
+    const timer = new Date().getTime() + 60000;
 
     // User/Guild
     const userid = message.author.id;
@@ -20,6 +20,7 @@ module.exports = (message, egg) => {
     const updateXPSQL = `UPDATE leveling SET xp = xp + ${xp} WHERE guild = ${guildid} AND userid = '${userid}'`;
     const updateLvlSQL = `UPDATE leveling SET xp = 0, level = level + 1 WHERE guild = ${guildid} AND userid = '${userid}'`;
     const timerSQL = `UPDATE leveling SET timer = ${timer} WHERE guild = ${guildid} AND userid = '${userid}'`;
+    const msgSQL = `SELECT msg FROM disablemsg WHERE guild = ${guildid}`;
 
     egg.query(mainSQL, (err, rows) => {
         if (err) return errorMessage(err);
@@ -45,9 +46,17 @@ module.exports = (message, egg) => {
                             if (rows[0].xp > ReqXP) {
                                 egg.query(updateLvlSQL, (err, rows) => {
                                     if (err) return errorMessage(err);
-                                    egg.query(mainSQL, (err, rows) => {
-                                        message.reply(`you've reached level \`${rows[0].level}\``);
+
+                                    egg.query(msgSQL, (err, rows) => {
+                                        if (rows.length === 0) {
+                                            egg.query(mainSQL, (err, rows) => {
+                                                message.reply(`you've reached level \`${rows[0].level}\``);
+                                            });
+                                        } else {
+                                            return;
+                                        }
                                     });
+
                                 });
                             }
                         });

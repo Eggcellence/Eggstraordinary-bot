@@ -4,7 +4,6 @@ module.exports = {
     description: 'Pay/Trade/Donate eggs to other users',
     usage: '[command | alias] <amount> @user',
     category: 'eggs',
-    owner: false,
     run: async (client, message, args, egg, Discord) => {
 
         // Payer - Receiver - amount

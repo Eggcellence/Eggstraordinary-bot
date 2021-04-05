@@ -3,7 +3,6 @@
     aliases: ['inven', 'bag'],
     description: "View your inventory, shows list of items you purchased from the shop",
     category: 'eggs',
-    owner: false,
     run: async (client, message, args, egg, Discord) => {
 
         // Table: inventory

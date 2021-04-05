@@ -48,24 +48,10 @@ module.exports = async (client, message) => {
 			try {
 				let command = client.commands.get(cmd);
 				if (!command) {
-					command = client.commands.get(client.aliases.get(cmd));
-					if (!command) {
-						message.reply(':x: command does not exist');
-					} else {
-						if (command.owner) {
-							if (!devs.includes(message.author.id)) {
-								return message.reply(':x: - Unauthorized');
-							}
-						}
-						require("./disabledCmd")(client, message, args, egg, Discord, command);
-					}
-				} else
-				if (command) {
-					if (command.owner) {
-						if (!devs.includes(message.author.id)) {
-							return message.reply(':x: - Unauthorized');
-						}
-					}
+					command = client.aliases.get(cmd);
+					if(!command) return;
+					require("./disabledCmd")(client, message, args, egg, Discord, command);
+				} else {
 					require("./disabledCmd")(client, message, args, egg, Discord, command);
 				}
 			} catch (err) {

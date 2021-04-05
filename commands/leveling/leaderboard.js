@@ -5,7 +5,6 @@ module.exports = {
     aliases: ['lb', 'top'],
     description: 'A list of top 10 in leveling in this server',
     category: 'leveling',
-    owner: false,
     run: async (client, message, args, egg, Discord) => {
 
         let topTen = [];

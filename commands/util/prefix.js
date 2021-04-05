@@ -3,7 +3,6 @@ module.exports = {
     description: 'Change the prefix of the bot',
     usage: '[command] <prefix>',
     category: 'util',
-    owner: false,
     run: async (client, message, args, egg, Discord) => {
         
         if(!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send(`:x: You don't have rights to run this command`);

@@ -4,7 +4,6 @@ module.exports = {
     description: 'Enable/Disable commands. Enable all disabled commands',
     usage: '[command | alias] <enable | disable | reset> <command>',
     category: 'util',
-    owner: false,
     run: async (client, message, args, egg, Discord, command) => {
 
         // Table: disabledcmd

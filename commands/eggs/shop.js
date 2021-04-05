@@ -4,7 +4,6 @@ module.exports = {
     description: 'Buy yourself some items and save them to your inventory to get extra eggs on each claim!',
     usage: '[command | alias]',
     category: 'eggs',
-    owner: false,
     run: async (client, message, args, egg, Discord) => {
 
         // User/Guild

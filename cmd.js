@@ -1,7 +1,9 @@
 module.exports = {
     name: 'x',
+    description: 'x',
+    usage: '[command]',
+    aliases: ['x'],
     category: 'x',
-    owner: false,
     run: async (client, message, args, egg, Discord) => {
 
         // code 
