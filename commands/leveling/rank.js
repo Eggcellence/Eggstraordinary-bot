@@ -18,6 +18,9 @@ module.exports = {
         const guildid = message.guild.id;
 
         egg.query(`SELECT * FROM leveling WHERE guild = ${guildid} AND userid = '${userid}'`, (err, rows) => {
+
+            if(rows.length === 0) return message.reply(`you don't have any level/xp`).then(m => m.delete({timeout: 5000}))
+
             let xp = rows[0].xp
             let level = rows[0].level
             let reqxp = 5 * (level ** 2) + 50 * level + 100

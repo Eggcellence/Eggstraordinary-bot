@@ -69,7 +69,7 @@ module.exports = {
                             let price = shop[key].value;
                             let item = shop[key].item;
                             if (rows[0].eggs < price) {
-                                return message.reply(`you don't have enough 🥚 to buy this item`)
+                                return message.reply(`you don't have enough 🥚 to buy this item`).then(m => m.delete({timeout: 5000}))
                             } else {
                                 egg.query(`UPDATE UsersEggs SET eggs = eggs - ${price} WHERE userid = ${userid} AND guild = ${guild}`, (err, rows) => {
                                     if (err) errorMessage(err)

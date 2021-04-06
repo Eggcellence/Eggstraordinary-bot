@@ -9,7 +9,7 @@ module.exports = {
         // Table: disabledcmd
         // Content: guild VARCHAR(255), cmd VARCHAR(255)
 
-        if(!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send(`:x: You don't have rights to run this command`);
+        if(!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send(`:x: You don't have rights to run this command`).then(m => m.delete({timeout: 5000}));
 
         let cmd = client.commands.get(args[1]) || client.aliases.get(args[1]);
         let guildid = message.guild.id;

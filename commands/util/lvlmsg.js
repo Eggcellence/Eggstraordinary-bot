@@ -6,7 +6,7 @@ module.exports = {
     category: 'util',
     run: async (client, message, args, egg, Discord) => {
 
-        if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send(`:x: You don't have rights to run this command`);
+        if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send(`:x: You don't have rights to run this command`).then(m => m.delete({timeout: 5000}));
 
         // Guild
         const guildid = message.guild.id;
@@ -44,6 +44,8 @@ module.exports = {
                 }
             });
         }
+
+        message.channel.send(`\`e!lvlmsg <enable/disable>\` - disable leveling message`)
 
         function errorMessage(err) {
             message.reply(`⚠ - Code: ${err.code} - Please message the developer with the code`);

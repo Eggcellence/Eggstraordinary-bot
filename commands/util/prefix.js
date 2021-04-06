@@ -5,7 +5,7 @@ module.exports = {
     category: 'util',
     run: async (client, message, args, egg, Discord) => {
         
-        if(!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send(`:x: You don't have rights to run this command`);
+        if(!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send(`:x: You don't have rights to run this command`).then(m => m.delete({timeout: 5000}));
 
         // Guild/Prefix
         const guildid = message.guild.id;
@@ -20,7 +20,6 @@ module.exports = {
         if(!prefix) {
             return egg.query(mainSQL, (err, rows) => {
                 if (err) errorMessage(err)
-                console.log(rows)
                 if(rows.length === 0) {
                     message.reply(`prefix for \`${message.guild.name}\` is \`e!\``)
                 } else {
@@ -29,7 +28,7 @@ module.exports = {
             });
         }
 
-        if(regex.test(prefix) === true) return message.reply(':x: illegal characters in argument')
+        if(regex.test(prefix) === true) return message.reply(':x: illegal characters in argument').then(m => m.delete({timeout: 5000}))
 
         egg.query(mainSQL, (err, rows) => {
             if (err) errorMessage(err)

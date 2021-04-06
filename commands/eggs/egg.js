@@ -31,7 +31,7 @@ module.exports = {
                 egg.query(setupSQL, (err) => {
                     if (err) return errorMessage(err);
                     
-                    newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You got ${newegg} 🥚`);
+                    newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You've received your daily eggs: \`${newegg}\` - come back tomorrow for more!`);
                     egg.query(timerSQL);
                 });
             } else {
@@ -40,7 +40,7 @@ module.exports = {
                         if(rows.length === 0) {
                             egg.query(eggsSQL, (err) => {
                                 if (err) return errorMessage(err);
-                                newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You got \`${newegg}\` 🥚`);
+                                newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You've received your daily eggs: \`${newegg}\` - come back tomorrow for more!`);
                                 egg.query(timerSQL);
                             });
                         } else {
@@ -48,10 +48,9 @@ module.exports = {
                             if(rows[0].Farm > 0) newegg = newegg + rows[0].Farm * 30;
                             if(rows[0].Frog > 0) newegg = newegg + rows[0].Frog * 5;
                             if(rows[0].Duck > 0) newegg = newegg + rows[0].Duck * 20;
-    
-                            egg.query(eggsSQL, (err) => {
+                            egg.query(`UPDATE UsersEggs SET eggs = eggs + ${newegg} WHERE guild = ${guildid} AND userid = '${userid}'`, (err, rows) => {
                                 if (err) return errorMessage(err);
-                                newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You got \`${newegg}\` 🥚`);
+                                newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You've received your daily eggs: \`${newegg}\` - come back tomorrow for more!`);
                                 egg.query(timerSQL);
                             });
                         }

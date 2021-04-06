@@ -12,19 +12,19 @@ module.exports = {
         const amount = Number(Math.floor(args[0]));
 
         if (!amount) {
-            return message.reply(`please include a valid amount.`)
+            return message.reply(`please include a valid amount.`).then(m => m.delete({timeout: 5000}))
         }
         
         if(amount <= 0) {
-            return message.reply(`please choose a valid amount`)
+            return message.reply(`please choose a valid amount`).then(m => m.delete({timeout: 5000}))
         }
 
         if (!payee) {
-            return message.reply(`please mention the person you want to pay.`)
+            return message.reply(`please mention the person you want to pay.`).then(m => m.delete({timeout: 5000}))
         }
 
         if(payee === message.author) {
-            return message.reply(`why would you pay yourself?`)
+            return message.reply(`why would you pay yourself?`).then(m => m.delete({timeout: 5000}))
         }
 
         // Discord server
