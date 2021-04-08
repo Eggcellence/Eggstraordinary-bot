@@ -13,6 +13,7 @@ module.exports = (client, message) => {
     // Main SQL queries
     const mainEggSQL = `SELECT timer FROM UsersEggs WHERE timer IS NOT NULL`;
     const mainLvlSQL = `SELECT timer FROM leveling WHERE timer IS NOT NULL`;
+    const mainRobSQL = `SELECT timer FROM robtimer WHERE timer IS NOT NULL`;
 
     // Discord client
     console.log(`${client.user.username}!`);
@@ -22,7 +23,7 @@ module.exports = (client, message) => {
         // Current date
         let date = new Date();
 
-        // Check the egg timer every second
+        // Check the egg timer
         con.query(mainEggSQL, (err, rows) => {
             if (err) return errorMessage(err)
             rows.forEach(e => {
@@ -36,8 +37,23 @@ module.exports = (client, message) => {
                 }
             });
         });
+
+        // Check rob timer
+        // con.query(mainRobSQL, (err, rows) => {
+        //     if (err) return errorMessage(err)
+        //     rows.forEach(e => {
+        //         if (rows.length >= 1) {
+        //             let time = e.timer
+        //             if (date > time) {
+        //                 con.query(`DELETE FROM robtimer WHERE timer = ${time}`, (err, rows) => {
+        //                     if (err) return errorMessage(err)
+        //                 });
+        //             }
+        //         }
+        //     });
+        // });
         
-        // Check the leveling timer every second
+        // Check the leveling timer
         con.query(mainLvlSQL, (err, rows) => {
             if (err) throw err;
             rows.forEach(e => {

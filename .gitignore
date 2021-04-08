@@ -1,3 +1,5 @@
 node_modules
 db.js
 .env
+/commands/util/set.js
+/commands/games/rob.js

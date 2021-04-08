@@ -1,6 +1,7 @@
 # Egg bot, very eggsellent 🥚
 
 So what is Eggstraordinary? An incomplete yet stable egg bot. Please if you have any issues/questions regarding this don't hesitate to join our [support server](https://discord.gg/6rF4XxXdt6)
+But what if I told you it's actually a bot that I use to learn new things? For example in this bot I got better at classes and using MySQL by creating eggconomy and leveling. Pretty cool huh.
 
 # Hosting the bot locally
 
@@ -12,6 +13,7 @@ Put your MySQL credentials into [db.js](db.js) and run the following commands **
 - `CREATE TABLE disabledcmd (guild VARCHAR(255), cmd VARCHAR(255));`
 - `CREATE TABLE inventory (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, userid VARCHAR(255), guild VARCHAR(255), timer bigint, Chicken int NOT NULL DEFAULT 0, Farm int NOT NULL DEFAULT 0, Frog int NOT NULL DEFAULT 0, Duck int NOT NULL DEFAULT 0);`
 - `CREATE TABLE disablemsg (guild VARCHAR(255), msg int);`
+- `CREATE TABLE robtimer (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, guild VARCHAR(255), userid VARCHAR(255), timer bigint);`
 
 - Add your bot token into (create it) [.env](.env) and then run your bot with `node .`
 (it's recommended to use [nodemon](https://nodemon.io/) for development)

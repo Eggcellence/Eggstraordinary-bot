@@ -18,16 +18,13 @@ module.exports = {
             }
 
             if (args[0]) {
-
-                if (args[0] === 'cmd') {
-                    if (!args[1]) return message.reply('⚠ please include a command')
-                    const cmd = args[1].toLowerCase();
-                    let command = client.commands.get(cmd)
-                    if (!command) return message.reply(':x: command does not exist')
+                const cmd = args[0].toLowerCase();
+                let command = client.commands.get(cmd) || client.aliases.get(cmd)
+                if (command) {
                     const embed = new Discord.MessageEmbed()
                         .setTitle(`Command help for ${command.name}`)
                         .setDescription(`**❯ Description:** ${command.description || 'None'}
-                        \n**❯ Category:** ${command.category || 'Not sorted'}\n**❯ Usage:** ${command.usage || `No specific usage`}\n**❯ Alias(es):** ${command.aliases || 'No aliases'}\n**❯ Dev only:** ${command.owner = true ? 'No' : 'Yes'}`)
+                    \n**❯ Category:** ${command.category || 'Not sorted'}\n**❯ Usage:** ${command.usage || `No specific usage`}\n**❯ Alias(es):** ${command.aliases.join(', ') || 'No aliases'}\n**❯ Dev only:** ${command.owner = true ? 'No' : 'Yes'}`)
                         .setColor('YELLOW')
                         .setThumbnail(client.user.avatarURL())
                     message.channel.send(embed)
@@ -42,7 +39,7 @@ module.exports = {
                         const embed = new Discord.MessageEmbed()
                             .setTitle(`${args[0].toLowerCase()} | Help Desk`)
                             .setDescription(files)
-                            .setFooter(`${help} cmd <command>`)
+                            .setFooter(`${help} <command>`)
                             .setThumbnail(client.user.avatarURL())
                             .setColor("YELLOW")
 
@@ -51,7 +48,6 @@ module.exports = {
                         message.reply(':x: category does not exist')
                     }
                 }
-
             } else {
                 let cats = ''
                 client.categories.forEach(c => {
@@ -65,10 +61,6 @@ module.exports = {
                     .setColor("YELLOW")
                 message.channel.send(embed)
             }
-
-
         });
-
-
     }
 }

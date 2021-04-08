@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const mysql = require("mysql");
 let prefix = 'e!'
 const db = require("../db").database;
-const devs = ['554762539586682880', '196099091871170560', '633993042755452932']
 
 // Database connection
 let egg = mysql.createPool({
@@ -14,25 +13,22 @@ let egg = mysql.createPool({
 
 module.exports = async (client, message) => {
 
+	// Make sure user is not a bot, and commands are not run in DMs
+	if (!message.guild) return;
+	if (message.author.bot) return;
+
 	const guild = message.guild.id;
 
-	// Make sure user is not a bot, and commands are not run in DMs
-	if (message.author.bot) return;
-	if (!message.guild) return;
-
-	// Eggcellence server
-	// if (message.guild.id === '816947288643469314') return;
-
-	// Prefix?
-
+	// Prefix Handler & Leveling run & Command run
 	egg.query(`SELECT * FROM prefix WHERE guild = ${guild}`, async (err, rows) => {
 		if (err) throw err;
 		if (rows.length !== 0) {
 			prefix = rows[0].prefix;
+		} else {
+			prefix = 'e!'
 		}
-
 		let regex = new RegExp(`^<@!?${client.user.id}>( |)$`);
-		if (regex.test(message.content)) return message.reply(`my prefix for \`${message.guild.name}\` is \`${prefix}\``);
+		if (regex.test(message.content)) return message.member.send(`Prefix: \`${prefix}\` - use \`${prefix}help\` for more information`);
 
 		if (!message.content.startsWith(prefix)) {
 			// Leveling
