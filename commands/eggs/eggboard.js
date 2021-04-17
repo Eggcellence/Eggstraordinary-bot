@@ -9,8 +9,7 @@ module.exports = {
 
         let topTen = [];
         const guild = message.guild;
-        egg.query(`SELECT * FROM UsersEggs WHERE guild = ${guild.id} ORDER BY eggs DESC LIMIT 10`, (err, rows) => {
-
+        egg.query(`SELECT * FROM UsersEggs WHERE guild = ${guild.id} ORDER BY eggs DESC LIMIT 8`, (err, rows) => {
             if (rows.length === 0) return message.channel.send(`:x: The leaderboard is empty`)
 
             for (let i = 0; i < rows.length; i++) {
@@ -21,7 +20,6 @@ module.exports = {
 
                 topTen.push(obj);
             }
-
             let embed = new Discord.MessageEmbed()
                 .setTitle('Leaderboard')
                 .setThumbnail(message.guild.iconURL())

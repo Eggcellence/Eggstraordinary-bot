@@ -30,31 +30,45 @@ module.exports = {
             if (result.length < 1) {
                 egg.query(setupSQL, (err) => {
                     if (err) return errorMessage(err);
-                    
-                    newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You've received your daily eggs: \`${newegg}\` - come back tomorrow for more!`);
+
+                    newegg === 0 ? message.channel.send(`<:sad:833073292679184385> Oh dear, no 🥚 left for you!`) : message.channel.send(`<:nice:833072698502545508> You've received your daily eggs: \`${newegg}\` - come back tomorrow for more!`);
                     egg.query(timerSQL);
                 });
             } else {
                 if (result[0].timer == null) {
                     egg.query(inventorySQL, (err, rows) => {
-                        if(rows.length === 0) {
+                        if (rows.length === 0) {
                             egg.query(eggsSQL, (err) => {
                                 if (err) return errorMessage(err);
-                                newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You've received your daily eggs: \`${newegg}\` - come back tomorrow for more!`);
+                                newegg === 0 ? message.channel.send(`<:sad:833073292679184385> Oh dear, no 🥚 left for you!`) : message.channel.send(`<:nice:833072698502545508> You've received your daily eggs: \`${newegg}\` - come back tomorrow for more!`);
                                 egg.query(timerSQL);
                             });
                         } else {
-                            if(rows[0].Chicken > 0) newegg = newegg + rows[0].Chicken * 10;
-                            if(rows[0].Farm > 0) newegg = newegg + rows[0].Farm * 30;
-                            if(rows[0].Frog > 0) newegg = newegg + rows[0].Frog * 5;
-                            if(rows[0].Duck > 0) newegg = newegg + rows[0].Duck * 20;
-                            egg.query(`UPDATE UsersEggs SET eggs = eggs + ${newegg} WHERE guild = ${guildid} AND userid = '${userid}'`, (err, rows) => {
+                            let extraeggs;
+                            let item = []
+                            if (rows[0].Chicken > 0) {
+                                extraeggs = rows[0].Chicken * 10;
+                                item.push('🐔');
+                            }
+                            if (rows[0].Farm > 0) {
+                                extraeggs = rows[0].Farm * 30;
+                                item.push('👩‍🌾');
+                            }
+                            if (rows[0].Frog > 0) {
+                                extraeggs = rows[0].Frog * 5;
+                                item.push('🐸');
+                            }
+                            if (rows[0].Duck > 0) {
+                                extraeggs = rows[0].Duck * 20;
+                                item.push('🦆');
+                            }
+
+                            egg.query(`UPDATE UsersEggs SET eggs = eggs + ${newegg + extraeggs} WHERE guild = ${guildid} AND userid = '${userid}'`, (err, rows) => {
                                 if (err) return errorMessage(err);
-                                newegg === 0 ? message.channel.send(`Oh dear, no 🥚 left for you!`) : message.channel.send(`You've received your daily eggs: \`${newegg}\` - come back tomorrow for more!`);
+                                newegg === 0 ? message.channel.send(`<:sad:833073292679184385> Oh dear, no eggs left for you!`) : message.channel.send(`<:nice:833072698502545508> You've received your daily eggs: \`${newegg}\` + \`${extraeggs}\` extra eggs from ${item.join('+ ')} - come back tomorrow for more!`);
                                 egg.query(timerSQL);
                             });
                         }
-
                     });
                 } else {
                     egg.query(mainSQL, (err, rows) => {
