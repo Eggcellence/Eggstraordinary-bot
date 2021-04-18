@@ -9,7 +9,7 @@ module.exports = {
 
         let topTen = [];
         const guild = message.guild;
-        egg.query(`SELECT * FROM leveling WHERE guild = ${guild.id} ORDER BY level DESC LIMIT 9`, (err, rows) => {
+        egg.query(`SELECT * FROM leveling WHERE guild = ${guild.id} ORDER BY level DESC LIMIT 8`, (err, rows) => {
             if (rows.length === 0) return message.channel.send(`:x: The leaderboard is empty`)
 
             if (err) throw err;
