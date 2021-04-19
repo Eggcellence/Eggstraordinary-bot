@@ -44,22 +44,22 @@ module.exports = {
                                 egg.query(timerSQL);
                             });
                         } else {
-                            let extraeggs;
+                            let extraeggs = 0;
                             let item = []
                             if (rows[0].Chicken > 0) {
-                                extraeggs = rows[0].Chicken * 10;
+                                extraeggs = extraeggs + rows[0].Chicken * 10;
                                 item.push('🐔');
                             }
                             if (rows[0].Farm > 0) {
-                                extraeggs = rows[0].Farm * 30;
+                                extraeggs = extraeggs + rows[0].Farm * 30;
                                 item.push('👩‍🌾');
                             }
                             if (rows[0].Frog > 0) {
-                                extraeggs = rows[0].Frog * 5;
+                                extraeggs = extraeggs + rows[0].Frog * 5;
                                 item.push('🐸');
                             }
                             if (rows[0].Duck > 0) {
-                                extraeggs = rows[0].Duck * 20;
+                                extraeggs = extraeggs + rows[0].Duck * 20;
                                 item.push('🦆');
                             }
 
