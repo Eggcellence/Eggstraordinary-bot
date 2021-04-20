@@ -1,3 +1,5 @@
+let ratelimit = new Set();
+
 module.exports = {
     name: 'shop',
     aliases: ['buy'],
@@ -9,6 +11,7 @@ module.exports = {
         // User/Guild
         const userid = message.author.id;
         const guild = message.guild.id;
+        if(ratelimit.has(message.author.id)) return;
 
         let shop = {
             1: {
@@ -50,7 +53,9 @@ module.exports = {
             .setColor("YELLOW")
             .setFooter(`Choose by sending the name of the item or number. Respond with 'cancel' to stop the process`)
             .setThumbnail(client.user.avatarURL())
-        message.channel.send("\npick an item in the list or write a number:", embed).then(firstMessageEdit => {
+        message.channel.send("\nPick by sending the name of the item or number:", embed).then(firstMessageEdit => {
+
+            ratelimit.add(message.author.id);
 
             // Message collector
             const filter = (msg) => msg.author.id == message.author.id;
@@ -60,34 +65,41 @@ module.exports = {
 
             collector.on('collect', async msg => {
 
+                // console.log(ratelimit)
+
                 let args = msg.content.split(' ');
 
                 for (let key in shop) {
                     if (args[0] == key || args[0].toLowerCase() == shop[key].item.toLowerCase()) {
                         egg.query(mainSQL, (err, rows) => {
-                            if (err) errorMessage(err)
+                            if (err) errorMessage(err);
                             let price = shop[key].value;
                             let item = shop[key].item;
                             if (rows[0].eggs < price) {
                                 return message.reply(`you don't have enough 🥚 to buy this item`).then(m =>{
-                                     m.delete({timeout: 5000})
-                                     collector.stop()
+                                     m.delete({timeout: 5000});
+                                     ratelimit.delete(msg.author.id);
+                                     collector.stop();
                                 });
                             } else {
                                 egg.query(`UPDATE UsersEggs SET eggs = eggs - ${price} WHERE userid = ${userid} AND guild = ${guild}`, (err, rows) => {
-                                    if (err) errorMessage(err)
-                                    firstMessageEdit.delete()
+                                    if (err) errorMessage(err);
+                                    firstMessageEdit.delete();
                                     egg.query(inventorySQL, (err, rows) => {
-                                        if (err) errorMessage(err)
+                                        if (err) errorMessage(err);
                                         if(rows.length === 0) {
                                             egg.query(`INSERT INTO inventory (userid, guild, ${item}) VALUES (${userid}, ${guild}, 1)`, (err, rows) => {
-                                                if (err) errorMessage(err)
-                                                message.channel.send(`${message.author}, ${item} has been added to your inventory!`)
+                                                if (err) errorMessage(err);
+                                                message.channel.send(`${message.author}, ${item} has been added to your inventory!`);
+                                                ratelimit.delete(msg.author.id);
+                                                collector.stop();
                                             });
                                         } else {
                                             egg.query(`UPDATE inventory SET ${item} = ${item} + 1 WHERE userid = ${userid} AND guild = ${guild}`, (err, rows) => {
-                                                if (err) errorMessage(err)
-                                                message.channel.send(`${message.author}, ${item} has been added to your inventory!`)
+                                                if (err) errorMessage(err);
+                                                message.channel.send(`${message.author}, ${item} has been added to your inventory!`);
+                                                ratelimit.delete(msg.author.id);
+                                                collector.stop();
                                             });
                                         }
                                     });
