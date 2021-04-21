@@ -112,6 +112,7 @@ module.exports = {
                 if(msg.content === 'cancel') {
                     await collector.stop()
                     msg.react('✅')
+                    ratelimit.delete(msg.author.id);
                 }
             });
         });
