@@ -115,6 +115,10 @@ module.exports = {
                     ratelimit.delete(msg.author.id);
                 }
             });
+
+            collector.on('end', () => {
+                ratelimit.delete(message.author.id);
+            });
         });
 
         /**
