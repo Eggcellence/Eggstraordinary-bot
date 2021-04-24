@@ -19,10 +19,10 @@ module.exports = {
 
         if (args[0]) {
 
-            let user = message.guild.members.cache.find(u => u.user.username === args[0]);
+            let user = message.mentions.users.first() || message.guild.members.cache.find(u => u.user.username === args[0]);
             if(!user) return;
             
-            egg.query(`SELECT * FROM leveling WHERE guild = ${guildid} AND userid = ${user.user.id}`, (err, rows) => {
+            egg.query(`SELECT * FROM leveling WHERE guild = ${guildid} AND userid = ${user.id || user.user.id}`, (err, rows) => {
 
                 if (rows.length === 0) return message.channel.send(`<:woah:833072727224614963> Oh my god. This user never chatted here to gain XP!`).then(m => m.delete({
                     timeout: 5000
@@ -32,20 +32,17 @@ module.exports = {
                 let level = rows[0].level
                 let reqxp = 5 * (level ** 2) + 50 * level + 100
                 const rank = new canvacord.Rank()
-                    .setAvatar(user.user.avatarURL({
-                        format: 'png',
-                        dynamic: true
-                    }))
+                    .setAvatar(user.user ? user.user.avatarURL({format: 'png'}) : user.avatarURL({format: 'png'}))
                     .setCurrentXP(xp)
                     .setRequiredXP(reqxp)
                     .setLevel(level)
                     .setRank(0, 0, display = false)
                     .setLevelColor('#FFFFFF', '#f6b92b')
-                    .setStatus(user.user.presence.status)
+                    .setStatus(user.presence.status || user.user.presence.status)
                     .setProgressBar("#f6b92b", "COLOR")
-                    .setUsername(user.user.username)
+                    .setUsername(user.username || user.user.username)
 
-                    .setDiscriminator(user.user.discriminator);
+                    .setDiscriminator(user.discriminator || user.user.discriminator);
 
                 rank.build()
                     .then(data => {

@@ -25,60 +25,79 @@ module.exports = {
         const setupSQL = `INSERT INTO UsersEggs (userid, eggs, guild) VALUES (${userid}, ${newegg}, '${guildid}')`;
         const inventorySQL = `SELECT * FROM inventory WHERE guild = ${guildid} AND userid = ${userid}`;
 
-        egg.query(mainSQL, (err, result) => {
-            if (err) return errorMessage(err);
-            if (result.length < 1) {
-                egg.query(setupSQL, (err) => {
-                    if (err) return errorMessage(err);
+        if (args[0]) {
+            let user = message.mentions.users.first() || message.guild.members.cache.find(u => u.user.username === args[0]).user;
+            if (!user) return;
+            egg.query(`SELECT * FROM UsersEggs WHERE guild = ${guildid} AND userid = ${user.id || user.user.id}`, (err, rows) => {
+                if (err) errorMessage(err)
+                if (rows.length < 1) return message.reply(`${user.username || user.user.username} has no eggs! That's quite unfortunate.`)
 
-                    newegg === 0 ? message.channel.send(`<:sad:833073292679184385> Oh dear, no 🥚 left for you!`) : message.channel.send(`<:nice:833072698502545508> You've received your daily eggs: \`${newegg}\` - come back tomorrow for more!`);
-                    egg.query(timerSQL);
-                });
-            } else {
-                if (result[0].timer == null) {
-                    egg.query(inventorySQL, (err, rows) => {
-                        if (rows.length === 0) {
-                            egg.query(eggsSQL, (err) => {
-                                if (err) return errorMessage(err);
-                                newegg === 0 ? message.channel.send(`<:sad:833073292679184385> Oh dear, no 🥚 left for you!`) : message.channel.send(`<:nice:833072698502545508> You've received your daily eggs: \`${newegg}\` - come back tomorrow for more!`);
-                                egg.query(timerSQL);
-                            });
-                        } else {
-                            let extraeggs = 0;
-                            let item = []
-                            if (rows[0].Chicken > 0) {
-                                extraeggs = extraeggs + rows[0].Chicken * 10;
-                                item.push('🐔');
-                            }
-                            if (rows[0].Farm > 0) {
-                                extraeggs = extraeggs + rows[0].Farm * 30;
-                                item.push('👩‍🌾');
-                            }
-                            if (rows[0].Frog > 0) {
-                                extraeggs = extraeggs + rows[0].Frog * 5;
-                                item.push('🐸');
-                            }
-                            if (rows[0].Duck > 0) {
-                                extraeggs = extraeggs + rows[0].Duck * 20;
-                                item.push('🦆');
-                            }
-
-                            egg.query(`UPDATE UsersEggs SET eggs = eggs + ${newegg + extraeggs} WHERE guild = ${guildid} AND userid = '${userid}'`, (err, rows) => {
-                                if (err) return errorMessage(err);
-                                newegg === 0 ? message.channel.send(`<:sad:833073292679184385> Oh dear, no eggs left for you!`) : message.channel.send(`<:nice:833072698502545508> You've received your daily eggs: \`${newegg}\` + \`${extraeggs}\` extra eggs from ${item.join('+ ')} - come back tomorrow for more!`);
-                                egg.query(timerSQL);
-                            });
-                        }
-                    });
-                } else {
+                if (user.username == message.author.username) { 
                     egg.query(mainSQL, (err, rows) => {
                         if (err) errorMessage(err)
-                        let rest = Number(result[0].timer - new Date().getTime());
+                        let rest = Number(rows[0].timer - new Date().getTime());
                         message.reply(`you have \`${rows[0].eggs}\` 🥚 - you can claim more after \`${prettyMs(rest, {secondsDecimalDigits: 0})}\``)
                     });
+                } else {
+                    message.channel.send(`**${user.username}** has in total \`${rows[0].eggs}\` 🥚`)
                 }
-            }
-        });
+            });
+        } else
+
+            egg.query(mainSQL, (err, result) => {
+                if (err) return errorMessage(err);
+                if (result.length < 1) {
+                    egg.query(setupSQL, (err) => {
+                        if (err) return errorMessage(err);
+
+                        newegg === 0 ? message.channel.send(`<:sad:833073292679184385> Oh dear, no 🥚 left for you!`) : message.channel.send(`<:nice:833072698502545508> You've received your daily eggs: \`${newegg}\` - come back tomorrow for more!`);
+                        egg.query(timerSQL);
+                    });
+                } else {
+                    if (result[0].timer == null) {
+                        egg.query(inventorySQL, (err, rows) => {
+                            if (rows.length === 0) {
+                                egg.query(eggsSQL, (err) => {
+                                    if (err) return errorMessage(err);
+                                    newegg === 0 ? message.channel.send(`<:sad:833073292679184385> Oh dear, no 🥚 left for you!`) : message.channel.send(`<:nice:833072698502545508> You've received your daily eggs: \`${newegg}\` - come back tomorrow for more!`);
+                                    egg.query(timerSQL);
+                                });
+                            } else {
+                                let extraeggs = 0;
+                                let item = []
+                                if (rows[0].Chicken > 0) {
+                                    extraeggs = extraeggs + rows[0].Chicken * 10;
+                                    item.push('🐔');
+                                }
+                                if (rows[0].Farm > 0) {
+                                    extraeggs = extraeggs + rows[0].Farm * 30;
+                                    item.push('👩‍🌾');
+                                }
+                                if (rows[0].Frog > 0) {
+                                    extraeggs = extraeggs + rows[0].Frog * 5;
+                                    item.push('🐸');
+                                }
+                                if (rows[0].Duck > 0) {
+                                    extraeggs = extraeggs + rows[0].Duck * 20;
+                                    item.push('🦆');
+                                }
+
+                                egg.query(`UPDATE UsersEggs SET eggs = eggs + ${newegg + extraeggs} WHERE guild = ${guildid} AND userid = '${userid}'`, (err, rows) => {
+                                    if (err) return errorMessage(err);
+                                    newegg === 0 ? message.channel.send(`<:sad:833073292679184385> Oh dear, no eggs left for you!`) : message.channel.send(`<:nice:833072698502545508> You've received your daily eggs: \`${newegg}\` + \`${extraeggs}\` extra eggs from ${item.join('+ ')} - come back tomorrow for more!`);
+                                    egg.query(timerSQL);
+                                });
+                            }
+                        });
+                    } else {
+                        egg.query(mainSQL, (err, rows) => {
+                            if (err) errorMessage(err)
+                            let rest = Number(result[0].timer - new Date().getTime());
+                            message.reply(`you have \`${rows[0].eggs}\` 🥚 - you can claim more after \`${prettyMs(rest, {secondsDecimalDigits: 0})}\``)
+                        });
+                    }
+                }
+            });
 
         /**
          * Functions

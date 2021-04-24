@@ -13,22 +13,22 @@ module.exports = {
 
         if (args[0]) {
 
-            let user = message.guild.members.cache.find(u => u.user.username === args[0]);
+            let user = message.mentions.users.first() || message.guild.members.cache.find(u => u.user.username === args[0]);
             if(!user) return;
             
-            egg.query(`SELECT * FROM inventory WHERE guild = ${guild} AND userid = ${user.user.id}`, (err, rows) => {
+            egg.query(`SELECT * FROM inventory WHERE guild = ${guild} AND userid = ${user.id || user.user.id}`, (err, rows) => {
                 if (err) throw err;
                 if (rows.length === 0) {
-                    message.channel.send(`I think ${user.user.username} is up to something. He has nothing in his inventory!`).then(m => m.delete({
+                    message.channel.send(`I think ${user.username || user.user.username} is up to something. He has nothing in his inventory!`).then(m => m.delete({
                         timeout: 5000
                     }));
 
                 } else {
 
-                    if (!rows[0].Chicken && !rows[0].Farm && !rows[0].Duck && !rows[0].Frog) return message.channel.send(`${user.user.username} has nothing in their inventory!`)
+                    if (!rows[0].Chicken && !rows[0].Farm && !rows[0].Duck && !rows[0].Frog) return message.channel.send(`${user.username || user.user.username} has nothing in their inventory!`)
 
                     let embed = new Discord.MessageEmbed()
-                        .setTitle(`${user.user.username}'s Inventory`)
+                        .setTitle(`${user.username || user.user.username}'s Inventory`)
                         .addFields(
                             !rows[0].Chicken ? [] : {
                                 name: '🐔',
@@ -52,7 +52,7 @@ module.exports = {
                             }
                         )
                         .setColor('YELLOW')
-                        .setThumbnail(user.user.avatarURL())
+                        .setThumbnail(user.user ? user.user.avatarURL() : user.avatarURL())
                     message.channel.send(embed)
                 }
             });
