@@ -1,4 +1,5 @@
 const EntryPrice = 5;
+let ratelimit = new Set();
 
 module.exports = {
     name: 'rps',
@@ -7,6 +8,7 @@ module.exports = {
     category: 'games',
     run: async (client, message, args, egg, Discord) => {
         let options = ['rock', 'paper', 'scissors'];
+        if(ratelimit.has(message.author.id)) return;
 
         class RPS {
             constructor(user_, channel_, guild_) {
@@ -65,6 +67,7 @@ module.exports = {
                     .setDescription(`Your choice: **${this.pick}**\n AI choice: **${this.AI}**`)
                     .setColor(this.winner === this.user ? 'GREEN' : 'RED');
                 this.channel.send(embed);
+                ratelimit.delete(message.author.id)
             }
 
             reward() {
@@ -79,7 +82,8 @@ module.exports = {
             const collector = message.channel.createMessageCollector(filter);
 
             collector.on('collect', async (msg) => {
-                let args = msg.content.split(' ')[0].toUpperCase()
+                let args = msg.content.split(' ')[0].toUpperCase();
+                ratelimit.add(message.author.id);
                 if (args === 'Y') {
                     egg.query(`SELECT * FROM UsersEggs WHERE guild = ${message.guild.id} AND userid = ${message.author.id}`, async (err, rows) => {
                         if(rows.length === 0) {
@@ -105,6 +109,7 @@ module.exports = {
                     });
                 } else if (args === 'N') {
                     await m.delete();
+                    await ratelimit.delete(message.author.id)
                     collector.stop();
                 }
             });
