@@ -4,7 +4,7 @@ const prettyMs = require('pretty-ms');
 module.exports = {
     name: 'egg',
     category: 'eggs',
-    aliases: ['eg'],
+    aliases: ['bal', 'balance'],
     description: 'Claim eggs daily and check how many eggs you have!',
     run: async (client, message, args, egg) => {
 

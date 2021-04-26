@@ -2,7 +2,7 @@ let ratelimit = new Set();
 
 module.exports = {
     name: 'shop',
-    aliases: ['buy'],
+    aliases: ['buy', 'store', 'purchase'],
     description: 'Buy yourself some items and save them to your inventory to get extra eggs on each claim!',
     usage: '[command | alias]',
     category: 'eggs',
