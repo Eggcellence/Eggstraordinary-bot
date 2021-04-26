@@ -28,7 +28,7 @@ module.exports = async (client, message) => {
 			prefix = 'e!'
 		}
 		let regex = new RegExp(`^<@!?${client.user.id}>( |)$`);
-		if (regex.test(message.content)) return message.member.send(`Prefix: \`${prefix}\` - use \`${prefix}help\` for more information`);
+		if (regex.test(message.content)) return message.member.send(`Prefix: \`${prefix}\` - use \`${prefix}help\` for more information`).catch(() => message.channel.send(`Prefix: \`${prefix}\` - use \`${prefix}help\` for more information`));
 
 		if (!message.content.startsWith(prefix)) {
 			// Leveling
