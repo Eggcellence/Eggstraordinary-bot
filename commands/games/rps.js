@@ -1,3 +1,4 @@
+
 const EntryPrice = 5;
 let ratelimit = new Set();
 
@@ -8,7 +9,7 @@ module.exports = {
     category: 'games',
     run: async (client, message, args, egg, Discord) => {
         let options = ['rock', 'paper', 'scissors'];
-        if(ratelimit.has(message.author.id)) return;
+        if(ratelimit.has(message.author.id)) return console.log('reatelimtied')
 
         class RPS {
             constructor(user_, channel_, guild_) {
@@ -86,12 +87,9 @@ module.exports = {
                 ratelimit.add(message.author.id);
                 if (args === 'Y') {
                     egg.query(`SELECT * FROM UsersEggs WHERE guild = ${message.guild.id} AND userid = ${message.author.id}`, async (err, rows) => {
-                        if(rows.length === 0) {
-                            message.reply(':x: you have no eggs!').then(m => m.delete( {timeout: 5000} ));
-                            await m.delete( {timeout: 1000} );
-                            collector.stop();
-                        }
-                        if(rows[0].eggs < EntryPrice) { // we makin e!rob now innit
+                        if(rows[0].eggs < EntryPrice) {
+                            await ratelimit.delete(message.author.id)
+                            console.log(ratelimit)
                             message.reply(`:x: you don't have enough eggs!`).then(m => m.delete( {timeout: 5000} ));
                             await m.delete( {timeout: 1000} );
                             collector.stop();
@@ -113,6 +111,10 @@ module.exports = {
                     collector.stop();
                 }
             });
+
+            collector.on('end', () => {
+                ratelimit.delete(message.author.id)
+            })
         });
     }
 };
