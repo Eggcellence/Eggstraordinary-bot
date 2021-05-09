@@ -14,6 +14,11 @@ module.exports = {
                 .setThumbnail(client.user.displayAvatarURL())
             return embed
         }
-        client.generateInvite().then(inv => message.author.send(genEmbed(inv)))
+        client.generateInvite().then(inv => {
+            message.author.send(genEmbed(inv))
+            .catch(() => {
+                message.channel.send(genEmbed(inv))
+            })
+        })
     }
 };

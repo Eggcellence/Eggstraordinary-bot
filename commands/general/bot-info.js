@@ -15,7 +15,6 @@ module.exports = {
        const totalCmds = client.commands.size;
        const totalCats = client.categories.length;
 
-
        const embed = new Discord.MessageEmbed()
             .setTitle(`${client.user.username}'s general information`)
             .setAuthor('A7U', 'https://cdn.discordapp.com/avatars/554762539586682880/a_4996bcf82d46269c073ae41da7cc6456.webp', 'https://a7u.dev')
