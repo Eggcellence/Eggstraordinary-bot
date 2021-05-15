@@ -26,24 +26,27 @@ module.exports = {
         const inventorySQL = `SELECT * FROM inventory WHERE guild = ${guildid} AND userid = ${userid}`;
 
         if (args[0]) {
-            let user = message.mentions.users.first() || message.guild.members.cache.find(u => u.user.username === args[0]).user;
-            if (!user) return;
-            egg.query(`SELECT * FROM UsersEggs WHERE guild = ${guildid} AND userid = ${user.id || user.user.id}`, (err, rows) => {
-                if (err) errorMessage(err)
-                if (rows.length < 1) return message.reply(`${user.username || user.user.username} has no eggs! That's quite unfortunate.`)
+            // Try catch because with the logical OR operator I'm getting errors even when I do if(!user)
+            try {
+                let user = message.mentions.users.first() || message.guild.members.cache.find(u => u.user.username === args[0]).user || undefined;
+                egg.query(`SELECT * FROM UsersEggs WHERE guild = ${guildid} AND userid = ${user.id || user.user.id}`, (err, rows) => {
+                    if (err) errorMessage(err)
+                    if (rows.length < 1) return message.reply(`${user.username || user.user.username} has no eggs! That's quite unfortunate.`)
 
-                if (user.username == message.author.username) { 
-                    egg.query(mainSQL, (err, rows) => {
-                        if (err) errorMessage(err)
-                        let rest = Number(rows[0].timer - new Date().getTime());
-                        message.reply(`you have \`${rows[0].eggs}\` 🥚 - you can claim more after \`${prettyMs(rest, {secondsDecimalDigits: 0})}\``)
-                    });
-                } else {
-                    message.channel.send(`**${user.username}** has in total \`${rows[0].eggs}\` 🥚`)
-                }
-            });
-        } else
-
+                    if (user.username == message.author.username) {
+                        egg.query(mainSQL, (err, rows) => {
+                            if (err) errorMessage(err)
+                            let rest = Number(rows[0].timer - new Date().getTime());
+                            message.reply(`you have \`${rows[0].eggs}\` 🥚 - you can claim more after \`${prettyMs(rest, {secondsDecimalDigits: 0})}\``)
+                        });
+                    } else {
+                        message.channel.send(`**${user.username}** has in total \`${rows[0].eggs}\` 🥚`)
+                    }
+                });
+            } catch (err) {
+                return;
+            }
+        } else {
             egg.query(mainSQL, (err, result) => {
                 if (err) return errorMessage(err);
                 if (result.length < 1) {
@@ -81,8 +84,8 @@ module.exports = {
                                     extraeggs = extraeggs + rows[0].Duck * 20;
                                     item.push('🦆');
                                 }
-                                if(newegg === 0) return message.channel.send(`<:sad:833073292679184385> Oh dear, no eggs left for you!`);
-                                
+                                if (newegg === 0) return message.channel.send(`<:sad:833073292679184385> Oh dear, no eggs left for you!`);
+
                                 egg.query(`UPDATE UsersEggs SET eggs = eggs + ${newegg + extraeggs} WHERE guild = ${guildid} AND userid = '${userid}'`, (err, rows) => {
                                     if (err) return errorMessage(err);
                                     message.channel.send(`<:nice:833072698502545508> You've received your daily eggs: \`${newegg}\` + \`${extraeggs}\` extra eggs from ${item.join('+ ')} - come back tomorrow for more!`);
@@ -99,6 +102,7 @@ module.exports = {
                     }
                 }
             });
+        }
 
         /**
          * Functions
