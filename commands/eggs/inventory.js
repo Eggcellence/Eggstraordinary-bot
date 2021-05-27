@@ -32,7 +32,7 @@ module.exports = {
                         .addFields(
                             !rows[0].Chicken ? [] : {
                                 name: '🐔',
-                                value: `**${rows[0].Chicken}**`,
+                                value: `${rows[0].Chicken}`,
                                 inline: true
                             },
                             !rows[0].Farm ? [] : {

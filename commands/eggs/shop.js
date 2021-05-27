@@ -82,28 +82,33 @@ module.exports = {
                                      collector.stop();
                                 });
                             } else {
-                                egg.query(`UPDATE UsersEggs SET eggs = eggs - ${price} WHERE userid = ${userid} AND guild = ${guild}`, (err, rows) => {
-                                    if (err) errorMessage(err);
-                                    firstMessageEdit.delete();
-                                    egg.query(inventorySQL, (err, rows) => {
+                                egg.query(`SELECT ${item} FROM inventory WHERE userid = ${userid} AND guild = ${guild}`, (err, rows) => {
+                                    let count = rows[0][item];
+                                    if(count >= 100) return message.reply(`sorry, but the max amount of ${item}s you can have is 100. `);
+
+                                    egg.query(`UPDATE UsersEggs SET eggs = eggs - ${price} WHERE userid = ${userid} AND guild = ${guild}`, (err, rows) => {
                                         if (err) errorMessage(err);
-                                        if(rows.length === 0) {
-                                            egg.query(`INSERT INTO inventory (userid, guild, ${item}) VALUES (${userid}, ${guild}, 1)`, (err, rows) => {
-                                                if (err) errorMessage(err);
-                                                message.channel.send(`${message.author}, ${item} has been added to your inventory!`);
-                                                ratelimit.delete(msg.author.id);
-                                                collector.stop();
-                                            });
-                                        } else {
-                                            egg.query(`UPDATE inventory SET ${item} = ${item} + 1 WHERE userid = ${userid} AND guild = ${guild}`, (err, rows) => {
-                                                if (err) errorMessage(err);
-                                                message.channel.send(`${message.author}, ${item} has been added to your inventory!`);
-                                                ratelimit.delete(msg.author.id);
-                                                collector.stop();
-                                            });
-                                        }
+                                        firstMessageEdit.delete();
+                                        egg.query(inventorySQL, (err, rows) => {
+                                            if (err) errorMessage(err);
+                                            if(rows.length === 0) {
+                                                egg.query(`INSERT INTO inventory (userid, guild, ${item}) VALUES (${userid}, ${guild}, 1)`, (err, rows) => {
+                                                    if (err) errorMessage(err);
+                                                    message.channel.send(`${message.author}, ${item} has been added to your inventory!`);
+                                                    ratelimit.delete(msg.author.id);
+                                                    collector.stop();
+                                                });
+                                            } else {
+                                                egg.query(`UPDATE inventory SET ${item} = ${item} + 1 WHERE userid = ${userid} AND guild = ${guild}`, (err, rows) => {
+                                                    if (err) errorMessage(err);
+                                                    message.channel.send(`${message.author}, ${item} has been added to your inventory!`);
+                                                    ratelimit.delete(msg.author.id);
+                                                    collector.stop();
+                                                });
+                                            }
+                                        });
                                     });
-                                });
+                                })
                             }
                         });
                     }
