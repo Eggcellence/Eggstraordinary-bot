@@ -84,7 +84,10 @@ module.exports = {
                                     extraeggs = extraeggs + rows[0].Duck * 20;
                                     item.push('🦆');
                                 }
-                                if (newegg === 0) return message.channel.send(`<:sad:833073292679184385> Oh dear, no eggs left for you!`);
+                                if (newegg === 0) {
+                                    message.channel.send(`<:sad:833073292679184385> Oh dear, no eggs left for you!`);
+                                    egg.query(timerSQL);
+                                }
 
                                 egg.query(`UPDATE UsersEggs SET eggs = eggs + ${newegg + extraeggs} WHERE guild = ${guildid} AND userid = '${userid}'`, (err, rows) => {
                                     if (err) return errorMessage(err);
