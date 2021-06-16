@@ -9,7 +9,7 @@ module.exports = {
     category: 'games',
     run: async (client, message, args, egg, Discord) => {
         let options = ['rock', 'paper', 'scissors'];
-        if(ratelimit.has(message.author.id)) return console.log('reatelimtied')
+        if(ratelimit.has(message.author.id)) return;
 
         class RPS {
             constructor(user_, channel_, guild_) {
@@ -89,7 +89,6 @@ module.exports = {
                     egg.query(`SELECT * FROM UsersEggs WHERE guild = ${message.guild.id} AND userid = ${message.author.id}`, async (err, rows) => {
                         if(rows[0].eggs < EntryPrice) {
                             await ratelimit.delete(message.author.id)
-                            console.log(ratelimit)
                             message.reply(`:x: you don't have enough eggs!`).then(m => m.delete( {timeout: 5000} ));
                             await m.delete( {timeout: 1000} );
                             collector.stop();
