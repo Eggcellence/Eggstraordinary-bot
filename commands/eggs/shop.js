@@ -157,7 +157,8 @@ module.exports = {
                                                             message.reply(`you can't buy more than ${maxItem} for ${item}!`);
                                                             ratelimit.delete(msg.author.id);
                                                             collector2.stop()
-                                                        } else {
+                                                        }
+                                                        if(amount < maxItem && rows[0].eggs > totalPrice) {
                                                             egg.query(`UPDATE UsersEggs SET eggs = eggs - ${totalPrice} WHERE userid = ${userid} AND guild = ${guild}`, (err, rows) => {
                                                                 if (err) errorMessage(err);
                                                                 firstMessageEdit.delete();
@@ -182,10 +183,8 @@ module.exports = {
                                                             });
                                                         }
                                                     });
-                                                    
                                                 }
                                             });
-                                            
                                         });
                                     }
                                 })
